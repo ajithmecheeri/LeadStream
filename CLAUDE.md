@@ -1,4 +1,4 @@
-# Sunstream Lead Generation App (started as a copy of FitFirst/BrewMyJob, 2026-11-17)
+# LeadStream, Sunstream's lead generation app (started as a copy of FitFirst/BrewMyJob, 2026-11-17)
 
 > **Read `docs/SUNSTREAM-SPEC.md` first.** It holds the Sunstream requirements, the decisions made so far and the
 > open questions. Where it disagrees with the FitFirst notes below, the spec wins: this is an internal presales

@@ -1,4 +1,4 @@
-# Sunstream Lead Generation App: requirements and decisions
+# LeadStream (Sunstream lead generation app): requirements and decisions
 
 Internal application for Sunstream Global's presales team, started as a copy of FitFirst/BrewMyJob
 (copied 2026-11-17). The source document is `SunStreamPresalesApp.docx`. Where this file and the copied
@@ -37,6 +37,7 @@ Focus roles: engineering design, mechanical design, electronics design, PCB desi
 - **Several admins** add and manage users. Analytics for admins come later.
 - **Company details come from the ZoomInfo API first.**
 - **Setup:** a new separate repo copied from FitFirst; BrewMyJob stays untouched.
+- **App name: LeadStream.** User-facing text should say LeadStream (not FitFirst or BrewMyJob).
 
 ## Keep, change, remove (proposed; confirm)
 
@@ -61,7 +62,7 @@ Focus roles: engineering design, mechanical design, electronics design, PCB desi
 4. Notification channel for new matches (email, Slack or Teams, in-app).
 5. Lead status and CRM export (HubSpot, Salesforce, Zoho)?
 6. Crawling: portals stay on alert emails only; crawl company websites and permitting sources later (to confirm).
-7. App name, repo name, hosting.
+7. Repo name (suggested: `leadstream`) and hosting. The app name is decided: LeadStream.
 8. ZoomInfo: API access, credentials and licence terms; how it may be used for outreach.
 9. Contact information from websites: public business contacts only, honouring robots.txt (to confirm), and any
    outreach compliance rules Sunstream follows.
