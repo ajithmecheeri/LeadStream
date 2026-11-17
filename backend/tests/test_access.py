@@ -109,9 +109,9 @@ async def test_an_existing_account_accepts_and_coupons_add_up(client, super_admi
     assert (await client.get("/api/v1/jobs", headers=auth(r.json()["access_token"]))).status_code == 200
 
 
-async def test_an_admin_invite_makes_an_admin_who_keeps_job_sources(client, super_admin):
+async def test_an_admin_invite_makes_an_admin_who_needs_no_plan(client, super_admin):
     s = await new_seeker(client)
-    assert (await client.get("/api/v1/sources", headers=s["headers"])).status_code == 402
+    assert (await client.get("/api/v1/jobs", headers=s["headers"])).status_code == 402
     made = await invite(client, super_admin, s["user"]["email"], role="admin", months=3)
     assert made["free_months"] == 0  # admins never need a plan
     r = await client.post("/api/v1/invites/accept", headers=s["headers"], json={"token": token_of(made)})
@@ -120,21 +120,17 @@ async def test_an_admin_invite_makes_an_admin_who_keeps_job_sources(client, supe
     client.cookies.clear()
     assert r.json()["user"]["role"] == "admin" and r.json()["user"]["access"]["why"] == "admin"
     admin = auth(r.json()["access_token"])
-    assert (await client.get("/api/v1/sources", headers=admin)).status_code == 200
+    assert (await client.get("/api/v1/jobs", headers=admin)).status_code == 200
     # Invites and Admin settings stay with the super admin.
     assert (await client.get("/api/v1/admin/invites", headers=admin)).status_code == 403
     assert (await client.get("/api/v1/admin/settings", headers=admin)).status_code == 403
 
 
-async def test_job_seekers_with_a_plan_cant_manage_job_sources(client, user):
+async def test_job_seekers_cant_manage_invites(client, user):
     """`user` is a test account with free access: a job seeker."""
-    assert (await client.get("/api/v1/sources", headers=user["headers"])).status_code == 403
-    r = await client.post("/api/v1/sources/lookup", headers=user["headers"], json={"query": "Acme"})
-    assert r.status_code == 403
     assert (
         await client.post("/api/v1/admin/invites", headers=user["headers"], json={"email": "a@b.co"})
     ).status_code == 403
-    assert (await client.get("/api/v1/sources/jobs", headers=user["headers"])).status_code == 200
 
 
 async def test_invites_can_be_revoked_and_coupons_are_1_or_3_months(client, super_admin):

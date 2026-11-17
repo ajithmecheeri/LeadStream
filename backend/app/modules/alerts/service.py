@@ -15,14 +15,13 @@ from sqlalchemy import select
 
 from app.core.db import sessionmaker, user_scope
 from app.modules.alerts import feed as feeds
-from app.modules.alerts.models import AlertFeed
+from app.modules.alerts.models import AlertFeed, SourceRun
 from app.modules.alerts.query import BadQuery, google_terms
 from app.modules.catalog.service import upsert_cards
 from app.modules.jobs import found
 from app.modules.jobs.linking import link_cards
 from app.modules.jobs.models import UserJob
 from app.modules.matching.service import queue_scoring
-from app.modules.sources.models import SourceRun
 from app.modules.users.models import User
 
 log = logging.getLogger("fitfirst.alerts")

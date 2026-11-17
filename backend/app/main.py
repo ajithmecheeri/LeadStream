@@ -29,7 +29,6 @@ from app.modules.notifications.router import router as notifications_router
 from app.modules.profiles.router import router as profiles_router
 from app.modules.readiness.router import router as readiness_router
 from app.modules.settings.router import router as settings_router
-from app.modules.sources.router import router as sources_router
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s %(message)s")
 
@@ -83,7 +82,6 @@ def create_app() -> FastAPI:
         matching_router,
         readiness_router,
         applications_router,
-        sources_router,
         alerts_router,
         feedback_router,
     ):

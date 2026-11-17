@@ -15,7 +15,6 @@ TASK_MODULES = [
     "app.modules.ingestion.tasks",
     "app.modules.matching.tasks",
     "app.modules.jobs.tasks",
-    "app.modules.sources.tasks",
     "app.modules.alerts.tasks",
     "app.modules.notifications.tasks",
 ]

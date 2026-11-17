@@ -24,7 +24,6 @@ from app.modules.profiles.schemas import (
     SearchProfilePatch,
     SkillIn,
 )
-from app.modules.sources.tasks import queue_catch_up
 
 router = APIRouter(tags=["profiles"])
 
@@ -57,8 +56,6 @@ async def _out(db: AsyncSession, row: SearchProfile) -> SearchProfileOut:
 async def _ensure(db: AsyncSession, user_id: UUID) -> None:
     if await service.ensure_match_profiles(db, user_id):
         await queue_scoring(user_id, "match profiles made from resumes")
-        # The shared companies' open jobs that fit the new profile (user, 2026-11-17).
-        await queue_catch_up(user_id)
 
 
 @router.get("/profiles/meta", response_model=ProfilesMeta)

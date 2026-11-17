@@ -35,12 +35,6 @@ class Settings(BaseSettings):
     inbound_hmac_secret: str = ""
     inbound_max_bytes: int = 5_000_000
 
-    # The Job Search Service (services/jobsearch): company boards, Workday and job APIs (Adzuna's key is set
-    # there now). The app pulls its event feed; the token is shared with the service (JOBSEARCH_TOKEN).
-    jobsearch_url: str = "http://localhost:8100"
-    jobsearch_token: str = "local-dev-jobsearch-token"
-    jobsearch_timeout_seconds: float = 120.0  # a check of one Workday board can take a minute
-
     # Milestone 6: WhatsApp alerts through Meta's WhatsApp Business (Cloud) API. Empty: messages are written to
     # the worker log instead of sent. Templates must be approved in WhatsApp Manager (docs/plan-m6.md).
     whatsapp_phone_number_id: str = ""

@@ -335,101 +335,20 @@ async def test_app_role_can_change_but_not_add_or_remove_app_settings(client):
         await conn.close()
 
 
-async def test_networking_tables_are_private(client, two_users):
-    """Milestone 7: connections, imports, suggestions, outreach and its events."""
+async def test_source_runs_are_private(client, two_users):
+    """What each Google Alerts read found is private to the user."""
     conn = await asyncpg.connect(_dsn(os.environ["DATABASE_URL"]))
     try:
         alice, bob = [r["id"] for r in await conn.fetch("select id from users order by created_at")]
-        imp = await _as_user(
-            conn,
-            alice,
-            "insert into connection_imports (id, user_id) values (gen_random_uuid(), $1) returning id",
-            alice,
-        )
-        person = await _as_user(
-            conn,
-            alice,
-            "insert into connections (id, user_id, person_key, import_id) values (gen_random_uuid(), $1, 'k', $2) "
-            "returning id",
-            alice,
-            imp,
-        )
-        outreach = await _as_user(
-            conn,
-            alice,
-            "insert into outreach (id, user_id, kind, connection_id) values (gen_random_uuid(), $1, 'warm', $2) "
-            "returning id",
-            alice,
-            person,
-        )
         await _as_user(
             conn,
             alice,
-            "insert into outreach_events (id, user_id, outreach_id, kind) values (gen_random_uuid(), $1, $2, 'sent') "
-            "returning id",
-            alice,
-            outreach,
-        )
-        await _as_user(
-            conn,
-            alice,
-            "insert into network_suggestions (id, user_id, day, kind, person_key) "
-            "values (gen_random_uuid(), $1, current_date, 'warm', 'k') returning id",
+            "insert into source_runs (user_id, source, found) values ($1, 'google_alert', 3) returning id",
             alice,
         )
-        for t in ("connection_imports", "connections", "outreach", "outreach_events", "network_suggestions"):
-            assert await _as_user(conn, alice, f"select count(*) from {t}") == 1, t
-            assert await _as_user(conn, bob, f"select count(*) from {t}") == 0, t
-            assert await conn.fetchval(f"select count(*) from {t}") == 0, t
-        with pytest.raises(asyncpg.exceptions.InsufficientPrivilegeError):
-            await _as_user(
-                conn,
-                bob,
-                "insert into connections (id, user_id, person_key) values (gen_random_uuid(), $1, 'x') returning id",
-                alice,
-            )
-    finally:
-        await conn.close()
-
-
-async def test_job_source_tables_are_private(client, two_users):
-    """Milestone 9: which companies a user follows, and what each check found, are private. The feeds are shared
-    and can't be deleted by the app."""
-    conn = await asyncpg.connect(_dsn(os.environ["DATABASE_URL"]))
-    try:
-        alice, bob = [r["id"] for r in await conn.fetch("select id from users order by created_at")]
-        feed = await conn.fetchval(
-            "insert into company_feeds (name, ats, board) values ('Acme', 'lever', 'acme') returning id"
-        )
-        await _as_user(
-            conn,
-            alice,
-            "insert into watched_companies (user_id, employer_id) values ($1, $2) returning id",
-            alice,
-            feed,
-        )
-        await _as_user(
-            conn,
-            alice,
-            "insert into source_runs (user_id, source, employer_id, found) values ($1, 'company_feed', $2, 3) "
-            "returning id",
-            alice,
-            feed,
-        )
-        for t in ("watched_companies", "source_runs"):
-            assert await _as_user(conn, alice, f"select count(*) from {t}") == 1, t
-            assert await _as_user(conn, bob, f"select count(*) from {t}") == 0, t
-            assert await conn.fetchval(f"select count(*) from {t}") == 0, t
-        with pytest.raises(asyncpg.exceptions.InsufficientPrivilegeError):
-            await _as_user(
-                conn,
-                bob,
-                "insert into watched_companies (user_id, employer_id) values ($1, $2) returning id",
-                alice,
-                feed,
-            )
-        with pytest.raises(asyncpg.exceptions.InsufficientPrivilegeError):
-            await conn.execute("delete from company_feeds")
+        assert await _as_user(conn, alice, "select count(*) from source_runs") == 1
+        assert await _as_user(conn, bob, "select count(*) from source_runs") == 0
+        assert await conn.fetchval("select count(*) from source_runs") == 0
     finally:
         await conn.close()
 
@@ -533,38 +452,6 @@ async def test_feedback_and_learned_preferences_are_private(client, two_users):
             assert await conn.fetchval(f"select count(*) from {table}") == 0
         with pytest.raises(asyncpg.exceptions.InsufficientPrivilegeError):
             await _as_user(conn, bob, pref, alice)
-    finally:
-        await conn.close()
-
-
-async def test_apply_profiles_are_private(client, two_users):
-    """Milestone 14.1: phone, address, work history and education are private."""
-    conn = await asyncpg.connect(_dsn(os.environ["DATABASE_URL"]))
-    try:
-        alice, bob = [r["id"] for r in await conn.fetch("select id from users order by created_at")]
-        row = "insert into apply_profiles (user_id, phone) values ($1, '+91 90000 00001') returning user_id"
-        await _as_user(conn, alice, row, alice)
-        assert await _as_user(conn, alice, "select count(*) from apply_profiles") == 1
-        assert await _as_user(conn, bob, "select count(*) from apply_profiles") == 0
-        assert await conn.fetchval("select count(*) from apply_profiles") == 0
-        with pytest.raises(asyncpg.exceptions.InsufficientPrivilegeError):
-            await _as_user(conn, bob, row, alice)
-    finally:
-        await conn.close()
-
-
-async def test_extension_pairings_are_private(client, two_users):
-    """Milestone 14.3: which browsers are paired, and their token hashes, are private."""
-    conn = await asyncpg.connect(_dsn(os.environ["DATABASE_URL"]))
-    try:
-        alice, bob = [r["id"] for r in await conn.fetch("select id from users order by created_at")]
-        row = "insert into extension_tokens (user_id, name, token_hash) values ($1, 'Chrome', 'abc') returning id"
-        await _as_user(conn, alice, row, alice)
-        assert await _as_user(conn, alice, "select count(*) from extension_tokens") == 1
-        assert await _as_user(conn, bob, "select count(*) from extension_tokens") == 0
-        assert await conn.fetchval("select count(*) from extension_tokens") == 0
-        with pytest.raises(asyncpg.exceptions.InsufficientPrivilegeError):
-            await _as_user(conn, bob, row, alice)
     finally:
         await conn.close()
 

@@ -2,6 +2,7 @@ from datetime import datetime
 from uuid import UUID, uuid4
 
 from sqlalchemy import ARRAY, DateTime, ForeignKey, Integer, Text, func
+from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.dialects.postgresql import UUID as PgUUID
 from sqlalchemy.orm import Mapped, mapped_column
 
@@ -24,3 +25,24 @@ class AlertFeed(Base):
     last_added: Mapped[int] = mapped_column(Integer, default=0)  # new to the user
     last_skipped: Mapped[int] = mapped_column(Integer, default=0)  # links to other sites
     last_job_ids: Mapped[list[UUID]] = mapped_column(ARRAY(PgUUID(as_uuid=True)), default=list)  # user_jobs
+
+
+class SourceRun(Base):
+    """One run-log line per Google Alerts read (and, before Job sources was removed, per company check). RLS: private.
+
+    `found`: jobs in India the source listed (or that arrived from it); `added`: new to the user; `skipped`: left
+    out by the relevance check.
+    """
+
+    __tablename__ = "source_runs"
+    id: Mapped[UUID] = mapped_column(primary_key=True, default=uuid4)
+    user_id: Mapped[UUID] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"))
+    source: Mapped[str] = mapped_column(Text)  # google_alert
+    employer_id: Mapped[UUID | None] = mapped_column()
+    ran_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    found: Mapped[int] = mapped_column(Integer, default=0)
+    added: Mapped[int] = mapped_column(Integer, default=0)
+    skipped: Mapped[int] = mapped_column(Integer, default=0)
+    # The run's jobs: [{"job_id", "why"}], why = None when kept (Job sources → Last run → all jobs).
+    jobs: Mapped[list] = mapped_column(JSONB, default=list)
+    error: Mapped[str | None] = mapped_column(Text)

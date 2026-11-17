@@ -3,7 +3,7 @@
 from app.core.db import Base
 from app.modules.access.models import Invite, Subscription
 from app.modules.admin.models import AppSetting
-from app.modules.alerts.models import AlertFeed
+from app.modules.alerts.models import AlertFeed, SourceRun
 from app.modules.applications.models import Application, ApplicationEvent, JobContact
 from app.modules.candidate.models import CandidateProfile
 from app.modules.catalog.models import Job, JobSource
@@ -17,20 +17,15 @@ from app.modules.notifications.models import Notification
 from app.modules.profiles.models import SearchProfile
 from app.modules.readiness.models import Answer
 from app.modules.settings.models import NotificationSettings
-from app.modules.sources.models import CompanyFeed, JobSearchSync, PlatformCompany, SourceRun, WatchedCompany
 from app.modules.users.models import AuditEvent, Consent, RefreshToken, User
 
 __all__ = [
     "Base",
     "Invite",
     "Subscription",
-    "PlatformCompany",
     "AlertFeed",
     "Answer",
-    "CompanyFeed",
-    "JobSearchSync",
     "SourceRun",
-    "WatchedCompany",
     "AppSetting",
     "Application",
     "ApplicationEvent",

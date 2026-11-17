@@ -58,7 +58,22 @@ def _alembic(*args: str) -> None:
 
 @pytest.fixture(scope="session")
 def schema():
-    _alembic("downgrade", "base")
+    # Not `alembic downgrade base`: migration 0034 (removed features) can't be undone. Drop the schema
+    # and rebuild from the migrations instead.
+    # A subprocess, because the fixture already runs inside an event loop.
+    script = (
+        "import asyncio, os\n"
+        "from sqlalchemy import text\n"
+        "from sqlalchemy.ext.asyncio import create_async_engine\n"
+        "async def main():\n"
+        "    engine = create_async_engine(os.environ['MIGRATIONS_DATABASE_URL'])\n"
+        "    async with engine.begin() as conn:\n"
+        "        await conn.execute(text('drop schema public cascade'))\n"
+        "        await conn.execute(text('create schema public'))\n"
+        "    await engine.dispose()\n"
+        "asyncio.run(main())\n"
+    )
+    subprocess.run([sys.executable, "-c", script], check=True, env=os.environ.copy(), capture_output=True)
     _alembic("upgrade", "head")
     yield
 
@@ -77,7 +92,7 @@ async def clean_db(request):
         # users cascades to every private table; the shared catalog and the task queue are listed.
         await conn.execute(
             text(
-                "truncate users, audit_events, jobs, waitlist, company_feeds, jobsearch_sync, procrastinate_jobs, procrastinate_workers, "
+                "truncate users, audit_events, jobs, procrastinate_jobs, procrastinate_workers, "
                 "procrastinate_periodic_defers restart identity cascade"
             )
         )
