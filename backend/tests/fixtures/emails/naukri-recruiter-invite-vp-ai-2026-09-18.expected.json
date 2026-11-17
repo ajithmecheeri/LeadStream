@@ -1,0 +1,27 @@
+{
+  "parser": "naukri_recruiter_invite@1",
+  "alert_name": null,
+  "cards": [
+    {
+      "source": "naukri_rdx",
+      "source_job_id": "180926021094",
+      "title": "VP-AI Senior Leader",
+      "company": null,
+      "location": "Mumbai, Bengaluru",
+      "work_model": "On-site",
+      "salary": null,
+      "experience": "20-30 years",
+      "skills": ["generative ai", "Architect", "Data Science", "Agentic Ai"],
+      "canonical_url": null,
+      "lead": "recruiter_invite",
+      "details": {
+        "recruiter": "Naukri Premium - Employer Services",
+        "industry": "FMCG",
+        "department": "Data Science & Analytics",
+        "role": "Data Science & Machine Learning - Other",
+        "employment_type": "Full Time, Permanent",
+        "education": "Graduation Not Required"
+      }
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "parser": "linkedin_digest@1",
+  "alert_name": "vice president in Bangalore Urban",
+  "cards": [
+    {"source": "linkedin", "source_job_id": "4484420848", "title": "Chief Engineer", "company": "Commonwealth Bank", "location": "Bengaluru East", "work_model": "Hybrid", "salary": null, "lead": "alert"},
+    {"source": "linkedin", "source_job_id": "4484441744", "title": "Sr. Vice President- Projects", "company": "Brigade Group", "location": "Bengaluru East", "work_model": null, "salary": null, "lead": "alert"},
+    {"source": "linkedin", "source_job_id": "4484103275", "title": "SEG & India CFO", "company": "Cognizant", "location": "Bangalore Urban", "work_model": "Hybrid", "salary": null, "lead": "alert"},
+    {"source": "linkedin", "source_job_id": "4483841832", "title": "Head S&OP/SIOP", "company": "Ola Electric", "location": "Bangalore Urban", "work_model": "On-site", "salary": null, "lead": "alert"},
+    {"source": "linkedin", "source_job_id": "4482272812", "title": "Professional Services Leader - India", "company": "FirstApex", "location": "Bangalore Urban", "work_model": "Remote", "salary": "₹5M-₹6M / year", "lead": "alert"},
+    {"source": "linkedin", "source_job_id": "4482543710", "title": "Director of Global Account Management - India", "company": "JumpCloud", "location": "Bengaluru East", "work_model": "Remote", "salary": null, "lead": "alert"}
+  ]
+}

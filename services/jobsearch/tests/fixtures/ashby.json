@@ -1,0 +1,11 @@
+{"jobs": [
+  {"id": "ash-1", "title": "Head of Platform Engineering", "location": "Bengaluru", "secondaryLocations": [],
+   "department": "Engineering", "workplaceType": "Hybrid", "isRemote": false, "isListed": true,
+   "descriptionPlain": "Platform at scale.", "publishedAt": "2026-10-30T08:00:00.000+00:00",
+   "jobUrl": "https://jobs.ashbyhq.com/quanta/ash-1", "compensation": {"compensationTierSummary": "₹80L – ₹1.1Cr"}},
+  {"id": "ash-2", "title": "Director, Engineering", "location": "Remote", "secondaryLocations": [],
+   "isRemote": true, "isListed": true, "address": {"postalAddress": {"addressCountry": "India"}},
+   "descriptionPlain": "Remote in India.", "publishedAt": "2026-10-30T08:00:00Z", "jobUrl": "https://jobs.ashbyhq.com/quanta/ash-2"},
+  {"id": "ash-3", "title": "VP Engineering", "location": "Bengaluru", "isListed": false,
+   "descriptionPlain": "Unlisted.", "jobUrl": "https://jobs.ashbyhq.com/quanta/ash-3"}
+]}

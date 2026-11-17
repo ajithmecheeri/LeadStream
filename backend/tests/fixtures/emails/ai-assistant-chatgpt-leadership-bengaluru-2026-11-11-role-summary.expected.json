@@ -1,0 +1,8 @@
+{
+  "parser": "ai_assistant_alert@7",
+  "alert_name": "New Bengaluru Leadership Job Opportunities",
+  "cards": [
+    {"source": "ai_assistant", "title": "Head, Regulatory Reporting Technology", "company": "Standard Chartered", "location": "Bangalore, India", "work_model": "On-site", "experience": "15+ years", "apply_url": "https://jobs.standardchartered.com/job/Bangalore-Head%2C-Regulatory-Reporting-Technology/64553-en_GB/"},
+    {"title": "Director - AI Engineering", "company": "GE Vernova", "work_model": null, "experience": "15+ years", "apply_url": "https://careers.gevernova.com/director-ai-engineering/job/R5058285"}
+  ]
+}

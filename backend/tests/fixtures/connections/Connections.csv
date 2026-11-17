@@ -1,0 +1,12 @@
+Notes:
+"When exporting your connection data, you may notice that some of the email addresses are missing. You will only see email addresses for connections who have allowed their connections to see or download their email address using this setting https://www.linkedin.com/psettings/privacy/email. You can learn more here: https://www.linkedin.com/help/linkedin/answer/261"
+
+First Name,Last Name,URL,Email Address,Company,Position,Connected On
+Meera,Shankar (sample),https://www.linkedin.com/in/meera-shankar-sample,meera@example.com,Commonwealth Bank of Australia,Senior Talent Acquisition Partner,12 Mar 2024
+Arjun,Pillai (sample),https://www.linkedin.com/in/arjun-pillai-sample/,,Commonwealth Bank,Staff Engineer,03 Jan 2023
+Divya,Menon (sample),https://www.linkedin.com/in/divya-menon-sample,,Crescendo Global Leadership Hiring India Pvt. Ltd.,Director - Technology Practice,21 Aug 2025
+Rahul,Varma (sample),https://www.linkedin.com/in/rahul-varma-sample,,Cyient Limited,VP Engineering,09 Feb 2022
+Sana,Qureshi (sample),https://www.linkedin.com/in/sana-qureshi-sample,,Northwind Fintech,Product Manager,30 Nov 2021
+Kiran,Rao (sample),,,Acme Analytics,Data Scientist,15 Jun 2020
+,,https://www.linkedin.com/in/nobody-sample,,,,
+"Thomas, Jr.",Fernandes (sample),https://www.linkedin.com/in/thomas-fernandes-sample,,"Helix Cloud Systems, Inc.",Head of Platform,01 Oct 2025

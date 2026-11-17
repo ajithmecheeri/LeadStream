@@ -1,0 +1,12 @@
+[
+  {"id": "a1b2c3d4-0001", "text": "VP Engineering", "hostedUrl": "https://jobs.lever.co/brightpay/a1b2c3d4-0001",
+   "categories": {"location": "Bangalore, Karnataka", "team": "Engineering", "department": "Technology", "allLocations": ["Bangalore, Karnataka"]},
+   "workplaceType": "hybrid", "createdAt": 1793000000000, "country": "IN",
+   "descriptionPlain": "Own engineering for payments.", "lists": [{"text": "What you'll do", "content": "<li>Hire leaders</li><li>Ship</li>"}],
+   "additionalPlain": "Equal opportunity employer.", "salaryRange": {"min": 9000000, "max": 12000000, "currency": "INR", "interval": "per-year-salary"}},
+  {"id": "a1b2c3d4-0002", "text": "Head of Engineering - Lending", "hostedUrl": "https://jobs.lever.co/brightpay/a1b2c3d4-0002",
+   "categories": {"location": "Singapore", "allLocations": ["Singapore", "Pune"]}, "workplaceType": "onsite",
+   "createdAt": 1793100000000, "descriptionPlain": "Lending.", "lists": []},
+  {"id": "a1b2c3d4-0003", "text": "Senior Director, Engineering", "hostedUrl": "https://jobs.lever.co/brightpay/a1b2c3d4-0003",
+   "categories": {"location": "London"}, "workplaceType": "remote", "createdAt": 1793100000000, "descriptionPlain": "UK.", "lists": []}
+]

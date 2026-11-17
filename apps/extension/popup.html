@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>BrewMyJob</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header><strong>brewmyjob</strong></header>
+  <section id="unpaired" hidden>
+    <p>Pair this browser with your BrewMyJob account: on <b>Settings → Browser extension</b>, click <b>Pair a browser</b> and paste the code here.</p>
+    <label>BrewMyJob address <input id="api" type="url" value="http://localhost:8080"></label>
+    <label>Pairing code <input id="code" autocomplete="off" placeholder="bmjpair.…"></label>
+    <button id="pair" class="primary">Pair</button>
+  </section>
+  <section id="paired" hidden>
+    <p class="who" id="who"></p>
+    <p id="site" class="muted"></p>
+    <button id="fill" class="primary">Fill this page</button>
+    <p class="muted small">Fills empty fields from your profile and marks them green; amber ones need you. It never clicks Next or Submit, and never signs in for you.</p>
+    <button id="unpair" class="link">Unpair this browser</button>
+  </section>
+  <p id="msg" role="status"></p>
+  <script src="src/match.js"></script>
+  <script src="popup.js" type="module"></script>
+</body>
+</html>

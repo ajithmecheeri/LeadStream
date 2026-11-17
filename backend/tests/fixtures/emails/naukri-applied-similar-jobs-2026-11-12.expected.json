@@ -1,0 +1,12 @@
+{
+  "parser": "naukri_applied@1",
+  "alert_name": null,
+  "cards": [
+    {"source": "naukri", "source_job_id": "111126835302", "title": "Consultant", "company": "Dhruv Technology & System Solution", "location": null, "experience": null, "lead": "alert", "canonical_url": "https://www.naukri.com/job-listings-111126835302"},
+    {"source": "naukri", "source_job_id": "161026022619", "title": "CTO, CIO, VP Engineering, Head of AI", "company": "Christ the King Matriculation School", "location": "Chennai, Bengaluru, Mumbai (All Areas)", "work_model": "Hybrid", "experience": "15-24 years", "lead": "recommendation"},
+    {"source": "naukri", "source_job_id": "040926019706", "title": "Senior Delivery Management Leader - AI productivity solutions", "company": "Epam Systems", "location": "Hyderabad, Pune, Bengaluru", "work_model": null, "experience": "18-20 years", "lead": "recommendation"},
+    {"source": "naukri", "source_job_id": "031126029539", "title": "Servicenow Business Analyst", "company": "Independent Recruitment Consultant (freelancer)", "location": "United Arab Emirates", "experience": "9-14 years", "lead": "recommendation"},
+    {"source": "naukri", "source_job_id": "191026914264", "title": "Digital Product Manager", "company": "Pepsico", "location": "Hyderabad, Gurugram", "experience": "7-12 years", "lead": "recommendation"},
+    {"source": "naukri", "source_job_id": "200826012733", "title": "Data & AI Strategy/ Consulting/ Architect/Transformation - Fortune 500", "company": "Mukul Consultants", "location": "Hyderabad, Pune, Chennai, Bengaluru, Delhi / NCR, Mumbai (All Areas)", "work_model": "Hybrid", "experience": "10-20 years", "lead": "recommendation"}
+  ]
+}

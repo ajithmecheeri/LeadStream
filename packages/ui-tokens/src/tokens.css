@@ -1,0 +1,49 @@
+/* BrewMyJob design tokens. Same values as index.ts. The 2026-11-13 look: a light sidebar, indigo accent,
+   slate inks, emerald / blue / amber for match bands (the user's "Executive Command Center" design). */
+:root {
+  --bg: #f8fafc; --panel: #ffffff; --panel-2: #f8fafc; --panel-3: #f1f5f9; --line: #e2e8f0; --line-2: #f1f5f9;
+  --ink: #0f172a; --ink-2: #475569; --ink-3: #64748b;
+  --dash-line: #cbd5e1;
+  --rail: #ffffff; --rail-2: #eef2ff; --rail-ink: #475569; --rail-hover: #f1f5f9; --rail-active: #4f46e5;
+  --acc: #4f46e5; --acc-ink: #ffffff; --acc-soft: #eef2ff; --acc-text: #4338ca; --acc-glow: rgba(79, 70, 229, .12);
+  --info: #2563eb; --info-soft: #eff6ff; --info-line: #bfdbfe; --info-text: #1d4ed8;
+  --good: #059669; --good-soft: #ecfdf5; --good-line: #a7f3d0; --good-text: #047857;
+  --warn: #d97706; --warn-soft: #fffbeb; --warn-line: #fde68a; --warn-text: #b45309;
+  --bad: #dc2626; --bad-soft: #fef2f2; --bad-line: #fecaca; --bad-text: #b91c1c;
+  --shadow-sm: 0 1px 2px rgba(15, 23, 42, .05);
+  --shadow: 0 4px 6px -1px rgba(15, 23, 42, .05), 0 2px 4px -2px rgba(15, 23, 42, .05);
+  --r-sm: 6px; --r-md: 8px; --r-lg: 12px; --r-xl: 16px;
+  --f-ui: var(--font-ui, "Plus Jakarta Sans"), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-num: var(--font-num, "JetBrains Mono"), ui-monospace, "SFMono-Regular", Menlo, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0b1120; --panel: #111827; --panel-2: #0f172a; --panel-3: #1e293b; --line: #1f2a3d; --line-2: #172033;
+    --ink: #e2e8f0; --ink-2: #a5b1c4; --ink-3: #7c8aa0;
+    --dash-line: #334155;
+    --rail: #0f172a; --rail-2: #1e1b4b; --rail-ink: #a5b1c4; --rail-hover: #172033; --rail-active: #a5b4fc;
+    --acc: #818cf8; --acc-ink: #0b1020; --acc-soft: #1e1b4b; --acc-text: #a5b4fc; --acc-glow: rgba(129, 140, 248, .2);
+    --info: #60a5fa; --info-soft: #0f2340; --info-line: #1e3a5f; --info-text: #93c5fd;
+    --good: #34d399; --good-soft: #052e22; --good-line: #065f46; --good-text: #6ee7b7;
+    --warn: #fbbf24; --warn-soft: #2d1f05; --warn-line: #713f12; --warn-text: #fcd34d;
+    --bad: #f87171; --bad-soft: #3a1414; --bad-line: #7f1d1d; --bad-text: #fca5a5;
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, .3);
+    --shadow: 0 4px 10px rgba(0, 0, 0, .3);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0b1120; --panel: #111827; --panel-2: #0f172a; --panel-3: #1e293b; --line: #1f2a3d; --line-2: #172033;
+  --ink: #e2e8f0; --ink-2: #a5b1c4; --ink-3: #7c8aa0;
+  --dash-line: #334155;
+  --rail: #0f172a; --rail-2: #1e1b4b; --rail-ink: #a5b1c4; --rail-hover: #172033; --rail-active: #a5b4fc;
+  --acc: #818cf8; --acc-ink: #0b1020; --acc-soft: #1e1b4b; --acc-text: #a5b4fc; --acc-glow: rgba(129, 140, 248, .2);
+  --info: #60a5fa; --info-soft: #0f2340; --info-line: #1e3a5f; --info-text: #93c5fd;
+  --good: #34d399; --good-soft: #052e22; --good-line: #065f46; --good-text: #6ee7b7;
+  --warn: #fbbf24; --warn-soft: #2d1f05; --warn-line: #713f12; --warn-text: #fcd34d;
+  --bad: #f87171; --bad-soft: #3a1414; --bad-line: #7f1d1d; --bad-text: #fca5a5;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, .3);
+  --shadow: 0 4px 10px rgba(0, 0, 0, .3);
+  color-scheme: dark;
+}

@@ -1,0 +1,23 @@
+# Cloudflare Email Worker for BrewMyJob alert forwarding. Deploy: make email-worker-deploy (see README.md).
+name = "brewmyjob-email"
+main = "src/index.ts"
+compatibility_date = "2026-10-01"
+# Email and cron only: no public workers.dev web address.
+workers_dev = false
+preview_urls = false
+
+[vars]
+# Where the API's /internal/inbound is reachable: the Cloudflare Tunnel hostname now, the server later (M8).
+API_URL = "https://inbound.brewmyjob.com"
+# Must equal INBOUND_DOMAIN in the API's .env.
+INBOUND_DOMAIN = "in.brewmyjob.com"
+# INBOUND_HMAC_SECRET is a secret: `wrangler secret put INBOUND_HMAC_SECRET` (same value as the API's .env).
+
+# Emails the API couldn't take (PC off, tunnel down) wait here and are retried by the cron below.
+# Create once with `wrangler kv namespace create OUTBOX` and paste the id it prints.
+[[kv_namespaces]]
+binding = "OUTBOX"
+id = "d8b51ebea5354261b2cfb346825b16d9"
+
+[triggers]
+crons = ["*/10 * * * *"]

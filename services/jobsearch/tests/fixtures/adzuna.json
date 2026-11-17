@@ -1,0 +1,9 @@
+{"count": 2, "results": [
+  {"id": "5100000001", "title": "<strong>VP</strong> Engineering", "company": {"display_name": "Nimbus Tech"},
+   "location": {"display_name": "Bengaluru, Karnataka"}, "description": "Lead a 200-person <strong>engineering</strong> org…",
+   "redirect_url": "https://www.adzuna.in/land/ad/5100000001?se=abc&v=def", "created": "2026-11-02T06:00:00Z",
+   "salary_min": 9000000, "salary_max": 9000000, "salary_is_predicted": "1", "category": {"label": "IT Jobs"}},
+  {"id": "5100000002", "title": "Data Entry Operator", "company": {"display_name": "Somefirm"},
+   "location": {"display_name": "Pune"}, "description": "Typing.", "redirect_url": "https://www.adzuna.in/land/ad/5100000002",
+   "created": "2026-11-02T06:00:00Z"}
+]}

@@ -1,0 +1,19 @@
+{
+  "name": "@fitfirst/email-worker",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Cloudflare Email Worker: alert emails forwarded to alerts-<token>@<INBOUND_DOMAIN> → POST /internal/inbound.",
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "deploy": "wrangler deploy",
+    "tail": "wrangler tail"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "5.20261018.1",
+    "typescript": "5.9.3",
+    "vitest": "5.0.5",
+    "wrangler": "4.151.1"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "parser": "ai_assistant_alert@7",
+  "alert_name": "New Bengaluru Leadership Job Opportunities",
+  "cards": [
+    {"source": "ai_assistant", "title": "Senior Director, Software Engineering", "company": "Capital One", "location": "Bengaluru", "work_model": null, "experience": "7+ years"},
+    {"title": "Director, Engineering – Personalization & Recommendations API (PNR)", "company": "Fox Corporation", "location": "Bengaluru", "work_model": "On-site", "experience": "12+ years"},
+    {"title": "Director, Web / WebApps Engineering", "company": "Fox Corporation", "location": "Bengaluru", "work_model": "On-site"},
+    {"title": "Senior Director, Technical Program Management", "company": "Walmart Global Tech", "location": "Bengaluru Home Office", "experience": "20+ years"},
+    {"title": "Senior Director, Software Engineering", "company": "GE HealthCare", "location": "Bengaluru EPIP", "work_model": "On-site"},
+    {"title": "Director, Engineering L1", "company": "Wipro", "location": "Bengaluru", "experience": "10+ years"},
+    {"title": "Director of Staff Engineering, Incidents and Escalations", "company": "Dynatrace", "location": "Bengaluru", "work_model": "On-site", "posted_at": null},
+    {"title": "Director, Engineering", "company": "Eightfold", "location": "Bengaluru", "work_model": "Hybrid", "experience": "12-15 years"},
+    {"title": "Director, Engineering", "company": "Exxat", "location": "Bengaluru", "canonical_url": "https://in.linkedin.com/jobs/view/director-of-engineering-at-exxat-4480362414"},
+    {"title": "Director, Data Science & Advanced Analytics", "company": "Exxat", "work_model": "On-site", "experience": "10-15 years"},
+    {"title": "Director & Head of Application Development & Engineering", "company": "Merck Group", "location": "Bengaluru"},
+    {"title": "Director, Software Engineering (GenAI Products & Accelerators)", "company": "Tredence", "experience": "15-20 years"},
+    {"title": "Director / Senior Director, AI Product Management", "company": "RecRoots client", "location": "Bangalore", "experience": "12-18 years"},
+    {"title": "VP Product, Lending / Consumer Technology", "company": "Jigsaw client", "salary": "₹90–100 LPA", "posted_at": null},
+    {"title": "Product Lead", "company": "Weekday Partner Network client", "work_model": "On-site", "salary": "₹70–150 LPA plus equity"},
+    {"title": "Director, Software Engineering", "company": "Infosys", "work_model": "On-site", "experience": "15-20 years"},
+    {"title": "AI Transformation Lead (Senior Director / VP)", "company": "Cyient Limited", "work_model": "On-site", "experience": "15+ years"}
+  ]
+}

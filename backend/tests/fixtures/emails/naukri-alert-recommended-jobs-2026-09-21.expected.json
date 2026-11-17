@@ -1,0 +1,17 @@
+{
+  "parser": "naukri_recommendations@1",
+  "alert_name": "Chief Architect, Strategy Manager, Managing Director",
+  "cards": [
+    {"source": "naukri", "source_job_id": "170926037140", "title": "Principle Solution Architect - Java /Product architecture", "company": "Crescendo Global Le...", "company_truncated": true, "location": "Bengaluru", "work_model": "Hybrid", "experience": "14-20 years", "outside_preference": false, "lead": "recommendation"},
+    {"source": "naukri", "source_job_id": "170926018827", "title": "Chief Architect - Physical AI & Robotics", "company": "Cyient", "company_truncated": false, "location": "Bengaluru", "work_model": null, "experience": "18-28 years", "outside_preference": false, "lead": "recommendation"},
+    {"source": "naukri", "source_job_id": "140926009658", "title": "Principal AI Architect", "company": "Spencer N Hills Con...", "company_truncated": true, "location": "Bengaluru", "work_model": "Hybrid", "experience": "14-18 years", "outside_preference": false, "lead": "recommendation"},
+    {"source": "naukri", "source_job_id": "150926009525", "title": "Product Management - Retail", "company": "Epam Systems", "company_truncated": false, "location": "Bengaluru", "work_model": null, "experience": "14-18 years", "outside_preference": false, "lead": "recommendation"},
+    {"source": "naukri", "source_job_id": "150926020443", "title": "Director Strategic Business & Corporate Affairs", "company": "Matrix Hr Technologies", "company_truncated": false, "location": "Bengaluru", "work_model": null, "experience": "16-26 years", "outside_preference": false, "lead": "recommendation"},
+    {"source": "naukri", "source_job_id": "180926922566", "title": "Director, Finance (FPNA with experience in BI skills required)", "company": "Visa Consolidated S...", "company_truncated": true, "location": "Bengaluru", "work_model": null, "experience": "15-20 years", "outside_preference": false, "lead": "recommendation"},
+    {"source": "naukri", "source_job_id": "040226029402", "title": "Program Manager Global - DVP/AVP - Automotive Domain", "company": "BharatHire.Com Priv...", "company_truncated": true, "location": "Pune, Chennai, Be...", "work_model": null, "experience": "15-24 years", "outside_preference": false, "lead": "recommendation"},
+    {"source": "naukri", "source_job_id": "160926035791", "title": "Director, Technical POM Product Management", "company": "BNY", "company_truncated": false, "location": "Pune(Kharadi)", "work_model": null, "experience": "18-25 years", "outside_preference": true, "lead": "recommendation"},
+    {"source": "naukri", "source_job_id": "160926025637", "title": "Head of AI Platform & Architecture", "company": "Maxic Arrow", "company_truncated": false, "location": "Jaipur", "work_model": null, "experience": "10-20 years", "outside_preference": true, "lead": "recommendation"},
+    {"source": "naukri", "source_job_id": "160926936460", "title": "S&C GN - TS&T - Enterprise AI Value Strategy - Senior Manager", "company": "Accenture", "company_truncated": false, "location": "Gurugram", "work_model": null, "experience": "14-19 years", "outside_preference": true, "lead": "recommendation"},
+    {"source": "naukri", "source_job_id": "170926034622", "title": "CTO/Head Technology/Chief Engineering Head", "company": "Orcapod Consulting ...", "company_truncated": true, "location": "Pune", "work_model": null, "experience": "15-22 years", "outside_preference": true, "lead": "recommendation"}
+  ]
+}

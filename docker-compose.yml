@@ -1,0 +1,161 @@
+# FitFirst local stack. Open http://localhost:8080 after `make up`.
+# Same shape as the Phase 1 Lightsail deployment (caddy, web, api, worker, db); MinIO joins in milestone 3.
+name: fitfirst
+
+x-db-env: &db-env
+  DB_OWNER: ${DB_OWNER:-fitfirst}
+  DB_OWNER_PASSWORD: ${DB_OWNER_PASSWORD:-fitfirst}
+  APP_DB_ROLE: ${APP_DB_ROLE:-fitfirst_app}
+  APP_DB_PASSWORD: ${APP_DB_PASSWORD:-fitfirst_app}
+  DB_NAME: ${DB_NAME:-fitfirst}
+
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    environment:
+      <<: *db-env
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+    volumes:
+      - db-data:/var/lib/postgresql/data
+      - ./infra/postgres/init:/docker-entrypoint-initdb.d:ro
+    ports:
+      - "5432:5432"   # so VS Code / psql / local `make dev-api` can reach it
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d ${DB_NAME:-fitfirst}"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  api:
+    build: ./backend
+    env_file: .env
+    environment:
+      ENV: ${ENV:-local}
+      APP_DB_ROLE: ${APP_DB_ROLE:-fitfirst_app}
+      DATABASE_URL: postgresql+asyncpg://${APP_DB_ROLE:-fitfirst_app}:${APP_DB_PASSWORD:-fitfirst_app}@db:5432/${DB_NAME:-fitfirst}
+      MIGRATIONS_DATABASE_URL: postgresql+asyncpg://${DB_OWNER:-fitfirst}:${DB_OWNER_PASSWORD:-fitfirst}@db:5432/${DB_NAME:-fitfirst}
+      TEST_DATABASE_URL: postgresql+asyncpg://${APP_DB_ROLE:-fitfirst_app}:${APP_DB_PASSWORD:-fitfirst_app}@db:5432/${DB_NAME:-fitfirst}_test
+      TEST_MIGRATIONS_DATABASE_URL: postgresql+asyncpg://${DB_OWNER:-fitfirst}:${DB_OWNER_PASSWORD:-fitfirst}@db:5432/${DB_NAME:-fitfirst}_test
+      PUBLIC_BASE_URL: http://localhost:8080
+      CORS_ORIGINS: '["http://localhost:8080","http://localhost:3000"]'
+      SEED_DEMO: ${SEED_DEMO:-true}
+      # The e2e tests and the demo use the app without a plan (docs/plan-roles-and-plans.md, decision 6).
+      FREE_ACCESS_EMAILS: ${FREE_ACCESS_EMAILS:-^(e2e-.*|demo)@example\.com$}
+      JOBSEARCH_URL: http://jobsearch-api:8100
+      JOBSEARCH_TOKEN: ${JOBSEARCH_TOKEN:-local-dev-jobsearch-token}
+    volumes:
+      - ./backend:/app   # live reload while ENV=local
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8000:8000"   # API docs at http://localhost:8000/api/docs
+
+  worker:
+    # Background jobs (Procrastinate). Same image and database role as the API; starts once the API
+    # has applied migrations. Restart it after editing a task: make restart
+    build: ./backend
+    env_file: .env
+    environment:
+      ENV: ${ENV:-local}
+      DATABASE_URL: postgresql+asyncpg://${APP_DB_ROLE:-fitfirst_app}:${APP_DB_PASSWORD:-fitfirst_app}@db:5432/${DB_NAME:-fitfirst}
+      JOBSEARCH_URL: http://jobsearch-api:8100
+      JOBSEARCH_TOKEN: ${JOBSEARCH_TOKEN:-local-dev-jobsearch-token}
+    command: ["python", "-m", "procrastinate", "--app=app.core.worker.app", "worker"]
+    volumes:
+      - ./backend:/app
+    healthcheck:
+      disable: true   # the image's check probes the API port, which the worker doesn't open
+    depends_on:
+      api:
+        condition: service_healthy
+
+  # --- Job Search Service (services/jobsearch, docs/jobsearch-plan-discovery.md) -----------------------------
+  # Its own databases and roles on the same Postgres server. Creates them on an existing volume too (the
+  # db container's init scripts run only on a new one); does nothing when they exist.
+  jobsearch-db:
+    image: pgvector/pgvector:pg16
+    environment:
+      PGHOST: db
+      PGUSER: postgres
+      PGPASSWORD: ${POSTGRES_PASSWORD:-postgres}
+    volumes:
+      - ./infra/postgres/init:/init:ro
+    entrypoint: ["sh", "/init/02-jobsearch.sh"]
+    restart: "no"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  jobsearch-api:
+    build: ./services/jobsearch
+    env_file: .env
+    environment: &jobsearch-env
+      JOBSEARCH_ENV: ${ENV:-local}
+      JOBSEARCH_DATABASE_URL: postgresql+asyncpg://jobsearch_app:${JOBSEARCH_APP_DB_PASSWORD:-jobsearch_app}@db:5432/jobsearch
+      JOBSEARCH_MIGRATIONS_DATABASE_URL: postgresql+asyncpg://jobsearch:${JOBSEARCH_DB_OWNER_PASSWORD:-jobsearch}@db:5432/jobsearch
+      JOBSEARCH_TEST_DATABASE_URL: postgresql+asyncpg://jobsearch_app:${JOBSEARCH_APP_DB_PASSWORD:-jobsearch_app}@db:5432/jobsearch_test
+      JOBSEARCH_TEST_MIGRATIONS_DATABASE_URL: postgresql+asyncpg://jobsearch:${JOBSEARCH_DB_OWNER_PASSWORD:-jobsearch}@db:5432/jobsearch_test
+      JOBSEARCH_TOKEN: ${JOBSEARCH_TOKEN:-local-dev-jobsearch-token}
+    volumes:
+      - ./services/jobsearch:/app   # live reload while ENV=local
+    depends_on:
+      jobsearch-db:
+        condition: service_completed_successfully
+    ports:
+      - "8100:8100"   # internal API; on the server it is not published (only the app calls it)
+
+  jobsearch-worker:
+    # Schedules: every employer board every 3 hours, job APIs every 6 hours (UTC). Restart after editing a task.
+    build: ./services/jobsearch
+    env_file: .env
+    environment: *jobsearch-env
+    command: ["python", "-m", "procrastinate", "--app=jobsearch.worker.app", "worker"]
+    volumes:
+      - ./services/jobsearch:/app
+    healthcheck:
+      disable: true
+    depends_on:
+      jobsearch-api:
+        condition: service_healthy
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    depends_on:
+      api:
+        condition: service_healthy
+
+  caddy:
+    image: caddy:2.10-alpine
+    environment:
+      SITE_ADDRESS: ${SITE_ADDRESS:-:80}
+    volumes:
+      - ./infra/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+    ports:
+      - "8080:80"
+      - "8443:443"
+    depends_on:
+      - web
+      - api
+
+  tunnel:
+    # Cloudflare Tunnel, so the Cloudflare email worker can reach /internal/inbound on this machine without
+    # opening a port. Only with `make tunnel` (needs CLOUDFLARE_TUNNEL_TOKEN in .env). The public hostname and
+    # its path rule (^/internal/inbound$ → http://api:8000) are set in the Cloudflare dashboard; see
+    # infra/cloudflare/email-worker/README.md.
+    image: cloudflare/cloudflared:2026.10.1
+    command: ["tunnel", "--no-autoupdate", "run"]
+    environment:
+      TUNNEL_TOKEN: ${CLOUDFLARE_TUNNEL_TOKEN:-}
+    profiles: ["tunnel"]
+    restart: unless-stopped
+    depends_on:
+      - api
+
+volumes:
+  db-data:
+  caddy-data:

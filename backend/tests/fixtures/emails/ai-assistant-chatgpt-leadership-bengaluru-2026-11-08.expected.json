@@ -1,0 +1,52 @@
+{
+  "parser": "ai_assistant_alert@7",
+  "alert_name": "New Bengaluru Leadership Job Opportunities",
+  "cards": [
+    {
+      "source": "ai_assistant",
+      "title": "Head of Product – Agentic Engineering",
+      "company": "SAP",
+      "location": "Bangalore",
+      "work_model": "Hybrid",
+      "experience": null,
+      "lead": "alert",
+      "canonical_url": "https://jobs.sap.com/en/jobs/744000159544088/head-of-product-agentic-engineering-base-bangalore/"
+    },
+    {
+      "source": "ai_assistant",
+      "title": "Director of Engineering – AI Inference Platform",
+      "company": "Arm",
+      "location": "Bengaluru",
+      "work_model": "Hybrid",
+      "experience": null,
+      "canonical_url": "https://careers.arm.com/job/bengaluru/director-of-engineering-ai-inference-platform/33099/102874078432"
+    },
+    {
+      "source": "ai_assistant",
+      "title": "Director of Software Engineering – Reconciliations Platform",
+      "company": "JPMorganChase",
+      "location": "Bengaluru",
+      "work_model": null,
+      "experience": "10+ years",
+      "canonical_url": "https://jpmc.fa.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1001/job/210801618"
+    },
+    {
+      "source": "ai_assistant",
+      "title": "Senior Director – Product Management",
+      "company": "Capital One",
+      "location": "Bengaluru",
+      "work_model": null,
+      "experience": "16+ years",
+      "canonical_url": "https://capitalone.wd12.myworkdayjobs.com/en-US/Capital_One/job/Bangalore-In/Sr-Director-Product-Management_R1000787-2"
+    },
+    {
+      "source": "ai_assistant",
+      "title": "VP – Regional Delivery Executive",
+      "company": "SAP",
+      "location": "Bangalore",
+      "work_model": "Hybrid",
+      "experience": "15+ years",
+      "canonical_url": "https://jobs.sap.com/en/jobs/744000159550479/vp-regional-delivery-executive/"
+    }
+  ]
+}

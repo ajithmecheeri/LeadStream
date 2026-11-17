@@ -1,0 +1,9 @@
+{
+  "parser": "ai_assistant_alert@7",
+  "alert_name": "New Bengaluru Leadership Job Opportunities",
+  "cards": [
+    {"source": "ai_assistant", "title": "Director - Delivery Data & AI", "company": "Thoughtworks", "location": "Bangalore, India", "work_model": "Hybrid", "experience": "20+ years", "apply_url": "https://www.thoughtworks.com/en-in/careers/jobs/8376818"},
+    {"title": "Engineering Director", "company": "Hitachi Vantara", "location": "Bengaluru, Karnataka", "work_model": "Hybrid", "experience": "15+ years", "apply_url": "https://careers.hitachi.com/engineering-director/job/R0150236"},
+    {"title": "Sr. Director, Technology BU Interface – International (Orthopaedics)", "company": "Johnson & Johnson / DePuy Synthes", "work_model": "On-site", "experience": "15+ years", "apply_url": "https://jj.wd5.myworkdayjobs.com/JJ/job/Bangalore-Karnataka-India/a-Sr-Director--Technology-BU-Interface---International--Orthopaedics-_R-100161-1"}
+  ]
+}

@@ -1,0 +1,33 @@
+{
+ "total": 3,
+ "jobPostings": [
+  {
+   "title": "Senior Network Infrastructure Engineer",
+   "externalPath": "/job/India-Remote/Senior-Network-Infrastructure-Engineer_JR2015526",
+   "locationsText": "5 Locations",
+   "postedOn": "Posted Today",
+   "bulletFields": [
+    "JR2015526"
+   ]
+  },
+  {
+   "title": "Senior System Software Engineer",
+   "externalPath": "/job/India-Pune/Senior-System-Software-Engineer_JR2029360",
+   "locationsText": "India, Pune",
+   "postedOn": "Posted Yesterday",
+   "bulletFields": [
+    "JR2029360"
+   ]
+  },
+  {
+   "title": "Senior Software Engineer - Infrastructure",
+   "externalPath": "/job/India-Pune/Senior-Software-Engineer---Infrastructure_JR2029287-1",
+   "locationsText": "India, Pune",
+   "postedOn": "Posted Yesterday",
+   "bulletFields": [
+    "JR2029287"
+   ]
+  }
+ ],
+ "facets": []
+}

@@ -1,0 +1,12 @@
+{
+  "parser": "linkedin_digest@1",
+  "alert_name": "Director Product Development in Greater Bengaluru Area",
+  "cards": [
+    {"source": "linkedin", "source_job_id": "4482596080", "title": "BUK TESCO Bank IN- Platforms-API Technical Product Owner - VP", "company": "Barclays", "location": "Bengaluru", "work_model": null, "salary": null, "lead": "alert"},
+    {"source": "linkedin", "source_job_id": "4484593586", "title": "Associate Product Director", "company": "Vegapay", "location": "Bengaluru", "work_model": "On-site", "salary": null, "lead": "alert"},
+    {"source": "linkedin", "source_job_id": "4484175392", "title": "Vice President Products", "company": "GreyLabs AI", "location": "Bangalore Urban", "work_model": "On-site", "salary": null, "lead": "alert"},
+    {"source": "linkedin", "source_job_id": "4475812480", "title": "SENIOR DIRECTOR, SOFTWARE ENGINEERING", "company": "Walmart Global Tech India", "location": "Bengaluru", "work_model": null, "salary": null, "lead": "alert"},
+    {"source": "linkedin", "source_job_id": "4484937952", "title": "Founding Engineering Manager", "company": "HuntingCube", "location": "Bengaluru East", "work_model": null, "salary": "₹1.3M-₹1.7M / year", "lead": "alert"},
+    {"source": "linkedin", "source_job_id": "4484989007", "title": "Group Product Manager", "company": "Microsoft", "location": "Bengaluru", "work_model": "On-site", "salary": null, "lead": "alert"}
+  ]
+}

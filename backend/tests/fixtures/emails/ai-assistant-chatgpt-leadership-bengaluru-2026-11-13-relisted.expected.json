@@ -1,0 +1,9 @@
+{
+  "parser": "ai_assistant_alert@7",
+  "alert_name": "New Bengaluru Leadership Job Opportunities",
+  "cards": [
+    {"source": "ai_assistant", "title": "Senior Director, Distinguished Engineer – SDLC and Autonomous Development, DevCMO Tech", "company": "GSK", "location": "Bengaluru Luxor North Tower", "work_model": null, "apply_url": "https://gsk.wd5.myworkdayjobs.com/GSKCareers/job/Bengaluru-Luxor-North-Tower/Senior-Director--Distinguished-Engineer---SDLC-and-Autonomous-Development--DevCMO-Tech_450742"},
+    {"title": "Director Product Management, Enterprise Data Strategy", "company": "Target", "location": "Bengaluru East / Manyata Tech Park", "work_model": "On-site", "experience": "10+ years", "apply_url": "https://target.wd5.myworkdayjobs.com/targetcareers/job/L4-Manyata-Embassy-Business-Park-Racenahali--Nagawara-Villages-Outer-Ring-Rd-Bangalore-540065/Director-Product-Management---Enterprise-Data-Strategy_R0000478841/apply"},
+    {"title": "Director, AI Product Management", "company": "MinIO", "location": "Bengaluru", "work_model": "Remote", "experience": "8+ years", "apply_url": "https://job-boards.greenhouse.io/minio/jobs/5430321008"}
+  ]
+}

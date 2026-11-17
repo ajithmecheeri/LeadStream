@@ -1,0 +1,105 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  PGHOST: localhost
+  PGPASSWORD: postgres
+  POSTGRES_USER: postgres
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: pgvector/pgvector:pg16
+        env:
+          POSTGRES_PASSWORD: postgres
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U postgres" --health-interval 5s --health-timeout 3s --health-retries 20
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: backend/pyproject.toml
+      - name: Create roles and databases
+        run: sh infra/postgres/init/01-roles.sh
+      - name: Install
+        working-directory: backend
+        run: pip install -e ".[dev]"
+      - name: Lint
+        working-directory: backend
+        run: ruff check . && ruff format --check .
+      - name: Test
+        working-directory: backend
+        run: pytest -q
+
+  web:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: pnpm
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pnpm install --frozen-lockfile
+      - name: API client is up to date with the backend
+        run: |
+          pip install -e "backend"
+          pnpm api:gen
+          git diff --exit-code packages/api || (echo "Run 'make api-gen' and commit the result" && exit 1)
+      - run: pnpm --filter @fitfirst/web typecheck
+      - run: pnpm --filter @fitfirst/web test
+      - run: pnpm --filter @fitfirst/web build
+
+  e2e:
+    runs-on: ubuntu-latest
+    needs: [backend, web]
+    services:
+      postgres:
+        image: pgvector/pgvector:pg16
+        env:
+          POSTGRES_PASSWORD: postgres
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U postgres" --health-interval 5s --health-timeout 3s --health-retries 20
+    steps:
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: pnpm
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: sh infra/postgres/init/01-roles.sh
+      - run: pip install -e "backend"
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @fitfirst/web exec playwright install --with-deps chromium
+      - run: pnpm --filter @fitfirst/web build
+      - name: Start API and web
+        run: |
+          cd backend && python -m alembic upgrade head && (python -m uvicorn app.main:app --port 8000 &) && cd ..
+          (pnpm --filter @fitfirst/web start &)
+          for i in $(seq 1 30); do curl -sf localhost:3000/healthz && break; sleep 2; done
+      - run: pnpm --filter @fitfirst/web e2e
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-traces
+          path: apps/web/test-results

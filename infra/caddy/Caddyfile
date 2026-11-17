@@ -1,0 +1,25 @@
+# One origin for the browser: /api/* and /healthz go to FastAPI, everything else to Next.js.
+# Locally SITE_ADDRESS is ":80" (plain HTTP on localhost:8080). On the Lightsail box set it to your
+# domain (e.g. app.fitfirst.in) and Caddy fetches and renews the TLS certificate itself.
+{$SITE_ADDRESS::80} {
+	encode zstd gzip
+
+	@api path /api/* /healthz
+	handle @api {
+		reverse_proxy api:8000
+	}
+
+	handle {
+		reverse_proxy web:3000
+	}
+
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		-Server
+	}
+
+	log {
+		output stdout
+		format json
+	}
+}

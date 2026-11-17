@@ -1,0 +1,18 @@
+{"jobs": [
+  {"id": 7001, "title": "Director of Engineering, Platform", "location": {"name": "Bengaluru, India"},
+   "absolute_url": "https://boards.greenhouse.io/acmecloud/jobs/7001", "updated_at": "2026-10-30T10:00:00-04:00",
+   "first_published": "2026-10-28T09:00:00-04:00", "departments": [{"name": "Engineering"}], "offices": [],
+   "content": "&lt;p&gt;Lead the &lt;strong&gt;platform&lt;/strong&gt; teams.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Kubernetes&lt;/li&gt;&lt;li&gt;Go&lt;/li&gt;&lt;/ul&gt;"},
+  {"id": 7002, "title": "Principal Engineer", "location": {"name": "Remote - India"},
+   "absolute_url": "https://boards.greenhouse.io/acmecloud/jobs/7002", "updated_at": "2026-10-29T10:00:00Z",
+   "departments": [], "offices": [], "content": "&lt;p&gt;Build things.&lt;/p&gt;"},
+  {"id": 7003, "title": "Engineering Manager", "location": {"name": "Dublin, Ireland"},
+   "absolute_url": "https://boards.greenhouse.io/acmecloud/jobs/7003", "updated_at": "2026-10-29T10:00:00Z",
+   "departments": [], "offices": [{"name": "Dublin"}], "content": ""},
+  {"id": 7004, "title": "Software Engineer II", "location": {"name": "Hyderabad"},
+   "absolute_url": "https://boards.greenhouse.io/acmecloud/jobs/7004", "updated_at": "2026-10-29T10:00:00Z",
+   "departments": [], "offices": [], "content": "&lt;p&gt;Write code.&lt;/p&gt;"},
+  {"id": 7005, "title": "Director, Finance", "location": {"name": "Mumbai, India"},
+   "absolute_url": "https://boards.greenhouse.io/acmecloud/jobs/7005", "updated_at": "2026-10-29T10:00:00Z",
+   "departments": [], "offices": [], "content": "&lt;p&gt;Run finance.&lt;/p&gt;"}
+]}
