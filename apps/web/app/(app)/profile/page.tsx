@@ -4,7 +4,6 @@ import { useCallback, useEffect, useRef, useState, type FormEvent } from "react"
 import { DocumentLibrary } from "@/components/DocumentLibrary";
 import { ApplicationQuestions } from "@/components/ApplicationQuestions";
 import { AnswerBank } from "@/components/AnswerBank";
-import { ApplyProfileForm } from "@/components/ApplyProfileForm";
 import { MatchProfiles } from "@/components/MatchProfiles";
 import { ChipsInput, errorMessage, Field, fieldErrors, Notice, PageHeader, toNumOrNull, toStrOrNull } from "@/components/ui";
 import { api } from "@/lib/api";
@@ -82,7 +81,6 @@ export default function ProfilePage() {
               What BrewMyJob fills into company application forms (the Apply kit on a job, and the browser extension
               when you click it). Fill it from a resume, then check it. You always submit yourself.
             </p>
-            <ApplyProfileForm />
             <ApplicationQuestions />
           </div>
         ) : null}

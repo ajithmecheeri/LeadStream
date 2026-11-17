@@ -17,24 +17,19 @@ from app.modules.access.router import router as access_router
 from app.modules.admin.router import router as admin_router
 from app.modules.alerts.router import router as alerts_router
 from app.modules.applications.router import router as applications_router
-from app.modules.apply.router import router as apply_router
 from app.modules.auth.router import router as auth_router
 from app.modules.candidate.router import router as candidate_router
 from app.modules.documents.router import router as documents_router
-from app.modules.extension.google import router as extension_google_router  # POC 2026-11-17
-from app.modules.extension.router import router as extension_router
 from app.modules.feedback.router import router as feedback_router
 from app.modules.ingestion.router import internal_router
 from app.modules.ingestion.router import router as mail_router
 from app.modules.jobs.router import router as jobs_router
 from app.modules.matching.router import router as matching_router
-from app.modules.networking.router import router as networking_router
 from app.modules.notifications.router import router as notifications_router
 from app.modules.profiles.router import router as profiles_router
 from app.modules.readiness.router import router as readiness_router
 from app.modules.settings.router import router as settings_router
 from app.modules.sources.router import router as sources_router
-from app.modules.waitlist.router import router as waitlist_router
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s %(message)s")
 
@@ -68,15 +63,12 @@ def create_app() -> FastAPI:
     install_error_handlers(app)
 
     v1 = APIRouter(prefix="/api/v1")
-    # Open without a plan: signing up and in, the account, plans and invites, the extension (its own token), the
-    # super admin's pages and the public waitlist.
+    # Open without a plan: signing up and in, the account, plans and invites, the
+    # super admin's pages.
     for r in (
         auth_router,
         access_router,
-        extension_router,
-        extension_google_router,  # POC: Add from Google results (removable)
         admin_router,
-        waitlist_router,
     ):
         v1.include_router(r)
     # Everything else needs a running plan or coupon for a job seeker (docs/plan-roles-and-plans.md, 5).
@@ -91,11 +83,9 @@ def create_app() -> FastAPI:
         matching_router,
         readiness_router,
         applications_router,
-        networking_router,
         sources_router,
         alerts_router,
         feedback_router,
-        apply_router,
     ):
         v1.include_router(r, dependencies=[Depends(require_access)])
     app.include_router(v1)

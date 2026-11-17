@@ -1,5 +1,5 @@
 "use client";
-import type { Application, ApplicationList, Candidate, JobStats, Mail, NetworkSummary, SearchProfile, UserJob, WarmPath } from "@fitfirst/api";
+import type { Application, ApplicationList, Candidate, JobStats, Mail, SearchProfile, UserJob } from "@fitfirst/api";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, type FormEvent } from "react";
@@ -20,8 +20,6 @@ type Data = {
   due: ApplicationList;
   recent: ApplicationList;
   top: UserJob[];
-  network: NetworkSummary | null;
-  warm: WarmPath[];
 };
 
 const OPEN = ["applied", "interviewing", "offer"] as const;
@@ -74,18 +72,16 @@ export default function Dashboard() {
       api.applications({ due: true, limit: 5 }),
       api.applications({ limit: 6 }),
       api.jobs({ tab: "top", status: "active", limit: 5 }),
-      api.networkSummary().catch(() => null),
-      api.warmPaths().then((w) => w.items).catch(() => [] as WarmPath[]),
     ])
-      .then(([cand, profiles, stats, mail, due, recent, top, network, warm]) =>
-        setData({ cand, profiles, stats, mail, due, recent, top: top.items, network, warm }),
+      .then(([cand, profiles, stats, mail, due, recent, top]) =>
+        setData({ cand, profiles, stats, mail, due, recent, top: top.items }),
       )
       .catch((e) => setError(errorMessage(e)));
   }, []);
 
   if (error) return <Notice kind="bad">{error}</Notice>;
   if (!me || !data) return <div className="loading">Loading…</div>;
-  const { cand, profiles, stats, mail, due, recent, top, network, warm } = data;
+  const { cand, profiles, stats, mail, due, recent, top } = data;
 
   const steps = {
     profile: cand.completeness >= 70,
@@ -195,15 +191,6 @@ export default function Dashboard() {
             {OPEN.map((k) => `${recent.counts[k] ?? 0} ${APPLICATION_STATUS[k]!.label.toLowerCase()}`).join(" · ")}
           </div>
         </div>
-        <div className="kpi">
-          <div className="kpi-head"><span>Warm paths</span><Icon name="link" /></div>
-          <div className="kpi-value num acc-text">{network?.warm_jobs ?? 0}</div>
-          <div className="kpi-desc">
-            {network && network.connections > 0
-              ? `Top matches and applied jobs where you know someone (${network.connections} connections)`
-              : <Link href="/networking">Import your LinkedIn connections</Link>}
-          </div>
-        </div>
       </section>
 
       <div className="dash-grid">
@@ -251,34 +238,6 @@ export default function Dashboard() {
             <p className="subtle" style={{ marginTop: 12 }}>
               {stats.other} below your threshold are under Other jobs{stats.unscored ? `; ${stats.unscored} wait for a score` : ""}.
             </p>
-          </section>
-
-          <section className="card">
-            <div className="section-head">
-              <h3>Who you know</h3>
-              <span className="spacer" />
-              <Link className="subtle" href="/networking">Networking →</Link>
-            </div>
-            {warm.length ? (
-              <ul className="people">
-                {warm.slice(0, 4).map((w) => (
-                  <li key={w.user_job_id}>
-                    <span className="avatar avatar-soft" aria-hidden="true">{(w.company[0] ?? "?").toUpperCase()}</span>
-                    <span className="grow clip-line">
-                      <Link href={`/jobs/${w.user_job_id}`}><b>{w.company}</b></Link>
-                      <small>{w.total_people} {w.total_people === 1 ? "person" : "people"} you know · {w.title}</small>
-                    </span>
-                    {w.score != null ? <span className="badge num">{w.score}</span> : null}
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p className="muted">
-                {network && network.connections > 0
-                  ? "None of your connections work at your top matches yet."
-                  : "Import your LinkedIn connections to see who you know at each company."}
-              </p>
-            )}
           </section>
 
           <section className="claim-card">

@@ -27,11 +27,11 @@ from sqlalchemy import or_, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import aliased
 
+from app.modules.catalog.companies import company_key, matches
 from app.modules.catalog.models import Job, JobSource
 from app.modules.catalog.parsers.base import COMPANY_SITES
 from app.modules.jobs.models import LEAD_RANK, JobDuplicate, UserJob
 from app.modules.matching import taxonomy
-from app.modules.networking.companies import company_key, matches
 
 FEEDS = COMPANY_SITES  # two listings on one company's careers site are separate openings
 TITLE_CLOSE = 0.6  # share of title words in common (Jaccard) for "a similar title"

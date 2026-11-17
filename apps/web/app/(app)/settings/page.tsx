@@ -5,7 +5,6 @@ import { useEffect, useState, type FormEvent } from "react";
 import { errorMessage, Field, Notice, PageHeader } from "@/components/ui";
 import { api } from "@/lib/api";
 import { useSession } from "@/lib/session";
-import { BrowserExtension } from "@/components/BrowserExtension";
 import { WhatsAppAlerts } from "@/components/WhatsAppAlerts";
 
 const ZONES = ["Asia/Kolkata", "Asia/Dubai", "Asia/Singapore", "Europe/London", "America/New_York", "America/Los_Angeles", "UTC"];
@@ -91,7 +90,6 @@ export default function SettingsPage() {
       <div className="sticky-actions"><button className="btn btn-primary" disabled={busy}>{busy ? "Saving…" : "Save settings"}</button></div>
     </form>
     <WhatsAppAlerts timeZone={me.timezone} />
-    <BrowserExtension />
     </>
   );
 }

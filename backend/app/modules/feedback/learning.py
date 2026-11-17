@@ -21,9 +21,9 @@ Guards, so one click can't hide a whole search:
 import re
 from dataclasses import dataclass
 
+from app.modules.catalog.companies import company_key, matches
 from app.modules.jobs.duplicates import poster
 from app.modules.matching import taxonomy
-from app.modules.networking.companies import company_key, matches
 
 REASONS = {
     "field": "Not my field",

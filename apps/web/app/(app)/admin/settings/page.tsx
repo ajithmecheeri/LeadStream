@@ -1,5 +1,5 @@
 "use client";
-import type { AdminSettings, ContactMessages, Waitlist } from "@fitfirst/api";
+import type { AdminSettings } from "@fitfirst/api";
 import { useEffect, useState, type FormEvent } from "react";
 import { InvitesCard } from "@/components/InvitesCard";
 import { errorMessage, Field, fieldErrors, Notice, PageHeader } from "@/components/ui";
@@ -81,73 +81,6 @@ export default function AdminSettingsPage() {
         </div>
       </form>
       <InvitesCard />
-      <WaitlistCard />
-      <ContactCard />
     </>
-  );
-}
-
-/** The emails left on the home page, newest first. */
-function WaitlistCard() {
-  const [list, setList] = useState<Waitlist | null>(null);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    api.waitlist().then(setList).catch((e) => setError(errorMessage(e)));
-  }, []);
-
-  return (
-    <section className="card stack" style={{ marginTop: 16 }} data-testid="waitlist">
-      <div className="card-head">
-        <h2>Waitlist</h2>
-        {list ? <span className="subtle">{list.total} {list.total === 1 ? "person" : "people"}</span> : null}
-      </div>
-      {error ? <Notice kind="bad">{error}</Notice> : null}
-      {list && list.entries.length === 0 ? <p className="muted">No one yet. The form is on the home page.</p> : null}
-      {list && list.entries.length > 0 ? (
-        <table className="table">
-          <thead><tr><th>Email</th><th>Joined</th></tr></thead>
-          <tbody>
-            {list.entries.map((e) => (
-              <tr key={e.email}><td>{e.email}</td><td className="subtle">{new Date(e.created_at).toLocaleString("en-IN")}</td></tr>
-            ))}
-          </tbody>
-        </table>
-      ) : null}
-      {list && list.total > list.entries.length ? <p className="subtle">Showing the newest {list.entries.length}.</p> : null}
-    </section>
-  );
-}
-
-const TOPIC: Record<string, string> = { general: "Question", support: "Account help", privacy: "Privacy request", feedback: "Feedback" };
-
-/** Messages from the public contact page (/contact), newest first. Privacy requests need an answer. */
-function ContactCard() {
-  const [list, setList] = useState<ContactMessages | null>(null);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    api.contactMessages().then(setList).catch((e) => setError(errorMessage(e)));
-  }, []);
-
-  return (
-    <section className="card stack" style={{ marginTop: 16 }} data-testid="contact-messages">
-      <div className="card-head">
-        <h2>Contact messages</h2>
-        {list ? <span className="subtle">{list.total} {list.total === 1 ? "message" : "messages"}</span> : null}
-      </div>
-      {error ? <Notice kind="bad">{error}</Notice> : null}
-      {list && list.messages.length === 0 ? <p className="muted">None yet. The form is at /contact.</p> : null}
-      {list?.messages.map((m) => (
-        <article key={`${m.email}-${m.created_at}`} className="stack" style={{ gap: 4, borderTop: "1px solid var(--line)", paddingTop: 10 }}>
-          <div>
-            <span className={m.topic === "privacy" ? "badge badge-warn" : "badge"}>{TOPIC[m.topic] ?? m.topic}</span>{" "}
-            <strong>{m.name}</strong> <a href={`mailto:${m.email}`}>{m.email}</a>{" "}
-            <span className="subtle">· {new Date(m.created_at).toLocaleString("en-IN")}</span>
-          </div>
-          <p style={{ margin: 0, whiteSpace: "pre-wrap" }}>{m.message}</p>
-        </article>
-      ))}
-    </section>
   );
 }

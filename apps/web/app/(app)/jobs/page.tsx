@@ -16,7 +16,7 @@ const TAB_EMPTY: Record<Tab, string> = {
   ignored: "Nothing ignored.",
   all: "No jobs match these filters.",
   sources: "",
-  review: "Nothing to review. Jobs you add from Google results with the BrewMyJob extension wait here.",
+  review: "Nothing to review. Jobs added from Google results wait here.",
 };
 
 /** Jobs → From sources: every job the job sources brought you, the last run first and then older ones; the ones

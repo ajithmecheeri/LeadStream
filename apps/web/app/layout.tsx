@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { SessionProvider } from "@/lib/session";
-import { SITE_URL } from "./_home/site";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(SITE_URL),
-  title: "BrewMyJob",
-  description: "Your job alerts, brewed into applications worth sending. You always submit.",
+  title: "LeadStream",
+  description: "Sunstream's lead generation tool: job alerts matched to profiles, with company details.",
+  // An internal application: nothing here is for search engines.
+  robots: { index: false, follow: false },
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {

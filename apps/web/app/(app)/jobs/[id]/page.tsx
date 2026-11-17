@@ -1,9 +1,8 @@
 "use client";
-import type { ContactIn, ContactList, JobPeople, MatchDetail, ResumeComparison, Todo, UserJobDetail } from "@fitfirst/api";
+import type { ContactIn, ContactList, MatchDetail, ResumeComparison, Todo, UserJobDetail } from "@fitfirst/api";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { Fragment, useEffect, useState, type FormEvent } from "react";
-import { ApplyKit } from "@/components/ApplyKit";
 import { NotForMe, reasonLabel } from "@/components/NotForMe";
 import { errorMessage, Field, fieldErrors, Notice, PageHeader, toStrOrNull } from "@/components/ui";
 import { api } from "@/lib/api";
@@ -573,46 +572,16 @@ function MatchPanel({ jobId, match, rescoring, onJob }: { jobId: string; match: 
   );
 }
 
-/** Your LinkedIn connections at this job's company (milestone 7): a warm path to the team. */
-function PeopleYouKnow({ jobId }: { jobId: string }) {
-  const [people, setPeople] = useState<JobPeople | null>(null);
-  useEffect(() => {
-    api.jobPeople(jobId).then(setPeople).catch(() => setPeople(null));
-  }, [jobId]);
-  if (!people) return null;
-  if (!people.imported) {
-    return <p className="subtle" style={{ marginTop: 14 }}>Import your LinkedIn connections on <Link href="/networking">Networking</Link> to see who you know here.</p>;
-  }
-  if (!people.items.length) return null;
-  return (
-    <div className="stack" style={{ marginTop: 14, gap: 6 }} data-testid="people-you-know">
-      <h3>People you know at {people.company}</h3>
-      <ul className="doc-list">
-        {people.items.map((p) => (
-          <li key={p.id}>
-            <div className="grow stack-tight"><strong>{p.name}</strong><span className="subtle">{[p.position, p.company].filter(Boolean).join(" · ")}</span></div>
-            {p.profile_url ? <a className="btn btn-sm" href={p.profile_url} target="_blank" rel="noopener noreferrer">Profile ↗</a> : null}
-          </li>
-        ))}
-      </ul>
-      <p className="subtle">Ask one of them about the team or a referral. <Link href="/networking">Today&apos;s list</Link> drafts the note.</p>
-    </div>
-  );
-}
-
 /** Who to contact, at the top of the job: saved contacts, the recruiter the email named, emails and LinkedIn
- *  profiles written in the description, and people you know there. Shown only when there's someone. */
+ *  profiles written in the description. Shown only when there's someone. */
 function WhoToContact({ jobId }: { jobId: string }) {
   const [list, setList] = useState<ContactList | null>(null);
-  const [people, setPeople] = useState<JobPeople | null>(null);
   useEffect(() => {
     api.contacts(jobId).then(setList).catch(() => setList(null));
-    api.jobPeople(jobId).then(setPeople).catch(() => setPeople(null));
   }, [jobId]);
   const saved = list?.items ?? [];
   const found = list?.found ?? [];
-  const known = people?.items ?? [];
-  if (!saved.length && !found.length && !list?.from_email && !known.length) return null;
+  if (!saved.length && !found.length && !list?.from_email) return null;
 
   return (
     <section className="card highlight" style={{ marginBottom: 16 }} data-testid="who-to-contact">
@@ -645,17 +614,7 @@ function WhoToContact({ jobId }: { jobId: string }) {
               : <a className="btn btn-sm btn-primary" href={f.url} target="_blank" rel="noopener noreferrer">LinkedIn profile ↗</a>}
           </li>
         ))}
-        {known.slice(0, 3).map((p) => (
-          <li key={p.id}>
-            <div className="grow stack-tight">
-              <strong>{p.name}</strong>
-              <span className="subtle">You know them · {[p.position, p.company].filter(Boolean).join(" · ")}</span>
-            </div>
-            {p.profile_url ? <a className="btn btn-sm" href={p.profile_url} target="_blank" rel="noopener noreferrer">LinkedIn profile ↗</a> : null}
-          </li>
-        ))}
       </ul>
-      {known.length > 3 ? <p className="subtle">{known.length - 3} more people you know there, under Where it came from.</p> : null}
     </section>
   );
 }
@@ -1025,11 +984,9 @@ export default function JobPage() {
             <div><a className="btn btn-primary btn-sm" href={job.apply_url} target="_blank" rel="noopener noreferrer">Apply on Naukri ↗</a></div>
           </div>
         ) : null}
-        <PeopleYouKnow jobId={job.id} />
         <Contacts jobId={job.id} />
       </section>
 
-      {job.status !== "duplicate" ? <ApplyKit jobId={job.id} /> : null}
 
       <section className="card" id="description">
         <div className="card-head">

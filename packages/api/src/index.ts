@@ -57,21 +57,6 @@ export type ContactIn = Schemas["ContactIn"];
 export type ContactList = Schemas["ContactList"];
 export type AppSettings = Schemas["AppSettingsIO"];
 export type AdminSettings = Schemas["AdminSettingsOut"];
-export type Waitlist = Schemas["WaitlistOut"];
-export type NetworkSummary = Schemas["NetworkSummary"];
-export type ConnectionImport = Schemas["ImportOut"];
-export type ConnectionPerson = Schemas["ConnectionOut"];
-export type ConnectionList = Schemas["ConnectionList"];
-export type WarmPath = Schemas["WarmPath"];
-export type JobPeople = Schemas["JobPeople"];
-export type Daily = Schemas["Daily"];
-export type InviteNote = Schemas["InviteNoteOut"];
-export type Suggestion = Schemas["SuggestionOut"];
-export type AppliedCompany = Schemas["AppliedCompany"];
-export type Outreach = Schemas["OutreachOut"];
-export type OutreachDetail = Schemas["OutreachDetail"];
-export type OutreachList = Schemas["OutreachList"];
-export type OutreachStage = Outreach["stage"];
 export type Sources = Schemas["SourcesOut"];
 export type RunJob = Schemas["RunJobOut"];
 export type CompanyJob = Schemas["CompanyJobOut"];
@@ -86,13 +71,6 @@ export type SentMessage = Schemas["NotificationOut"];
 export type Bell = Schemas["BellOut"];
 export type BellItem = Schemas["BellItemOut"];
 export type Learned = Schemas["LearnedOut"];
-export type ContactMessages = Schemas["ContactMessageList"];
-export type ApplyProfile = Schemas["ApplyProfileOut"];
-export type ApplyProfileIn = Schemas["ApplyProfileIn"];
-export type WorkEntry = Schemas["WorkEntry"];
-export type EducationEntry = Schemas["EducationEntry"];
-export type ApplyKit = Schemas["ApplyKitOut"];
-export type PairedBrowser = Schemas["DeviceOut"];
 export type NotForMeReason = Schemas["NotForMeIn"]["reason"];
 export type Access = Schemas["AccessOut"];
 export type Plans = Schemas["PlansOut"];
@@ -386,25 +364,6 @@ export function createApi(opts: ApiOptions = {}) {
         http.POST("/api/v1/applications/{application_id}/notes", { params: { path: { application_id: id } }, body: { text } }),
       ),
 
-    /** Upload LinkedIn's Connections export (CSV or ZIP), base64. */
-    importConnections: (body: Schemas["ImportIn"]) => call(() => http.POST("/api/v1/network/imports", { body })),
-    networkSummary: () => call(() => http.GET("/api/v1/network/summary")),
-    connections: (query?: { q?: string; limit?: number; offset?: number }) =>
-      call(() => http.GET("/api/v1/network/connections", { params: { query } })),
-    deleteConnections: () => call(() => http.DELETE("/api/v1/network/connections")),
-    warmPaths: () => call(() => http.GET("/api/v1/network/warm-paths")),
-    appliedCompanies: () => call(() => http.GET("/api/v1/network/applied")),
-    jobPeople: (id: string) => call(() => http.GET("/api/v1/jobs/{user_job_id}/people", { params: { path: { user_job_id: id } } })),
-    daily: (query?: { date?: string; regenerate?: boolean }) => call(() => http.GET("/api/v1/network/daily", { params: { query } })),
-    inviteNote: () => call(() => http.GET("/api/v1/network/invite-note")),
-    setInviteNote: (note: string | null) => call(() => http.PUT("/api/v1/network/invite-note", { body: { note } })),
-    markSuggestion: (id: string, body: Schemas["MarkIn"]) =>
-      call(() => http.POST("/api/v1/network/suggestions/{suggestion_id}/mark", { params: { path: { suggestion_id: id } }, body })),
-    outreachList: (stage?: OutreachStage) => call(() => http.GET("/api/v1/network/outreach", { params: { query: stage ? { stage } : {} } })),
-    outreach: (id: string) => call(() => http.GET("/api/v1/network/outreach/{outreach_id}", { params: { path: { outreach_id: id } } })),
-    addOutreach: (body: Schemas["OutreachIn"]) => call(() => http.POST("/api/v1/network/outreach", { body })),
-    updateOutreach: (id: string, body: Schemas["OutreachPatch"]) =>
-      call(() => http.PATCH("/api/v1/network/outreach/{outreach_id}", { params: { path: { outreach_id: id } }, body })),
 
     appSettings: () => call(() => http.GET("/api/v1/app-settings")),
     adminSettings: () => call(() => http.GET("/api/v1/admin/settings")),
@@ -438,25 +397,7 @@ export function createApi(opts: ApiOptions = {}) {
     removeAlertFeed: (id: string) =>
       call(() => http.DELETE("/api/v1/alerts/{feed_id}", { params: { path: { feed_id: id } } })),
 
-    joinWaitlist: (body: Schemas["WaitlistIn"]) => call(() => http.POST("/api/v1/waitlist", { body })),
-    contact: (body: Schemas["ContactMessageIn"]) => call(() => http.POST("/api/v1/contact", { body })),
 
-    /** What application forms ask for beyond the profile (milestone 14.1). Version 0 until the first save. */
-    applyProfile: () => call(() => http.GET("/api/v1/apply-profile")),
-    saveApplyProfile: (body: Schemas["ApplyProfileIn"]) => call(() => http.PUT("/api/v1/apply-profile", { body })),
-    /** Phone, city, work history and education read from a resume, to review. Nothing is saved. */
-    applyDraft: (resumeId: string) =>
-      call(() => http.POST("/api/v1/apply-profile/from-resume", { body: { resume_id: resumeId } })),
-    /** Everything a job's application form is likely to ask, to copy field by field (14.2). */
-    /** Browser extension (14.3): a one-time pairing code, the paired browsers, and unpairing one. */
-    extensionPairingCode: () => call(() => http.POST("/api/v1/extension/pairing-code")),
-    extensionDevices: () => call(() => http.GET("/api/v1/extension/devices")),
-    unpairExtension: (id: string) =>
-      call(() => http.DELETE("/api/v1/extension/devices/{device_id}", { params: { path: { device_id: id } } })),
-    applyKit: (id: string) =>
-      call(() => http.GET("/api/v1/jobs/{user_job_id}/apply-kit", { params: { path: { user_job_id: id } } })),
-    contactMessages: (offset = 0) => call(() => http.GET("/api/v1/admin/contact", { params: { query: { offset } } })),
-    waitlist: (offset = 0) => call(() => http.GET("/api/v1/admin/waitlist", { params: { query: { offset } } })),
 
     /** Plans, access and invites (user, 2026-11-17; docs/plan-roles-and-plans.md). */
     plans: () => call(() => http.GET("/api/v1/plans")),

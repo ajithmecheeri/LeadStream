@@ -24,7 +24,6 @@ const GROUPS: { title: string; items: NavItem[] }[] = [
       { href: "/applications", label: "Applications", icon: "send",
         badge: (c) =>
           c.followUps ? { text: `${c.followUps} due`, kind: "alert" } : c.openApps ? { text: `${c.openApps} open`, kind: "good" } : null },
-      { href: "/networking", label: "Networking", icon: "users" },
       { href: "/inbox", label: "Inbox", icon: "inbox" },
     ],
   },

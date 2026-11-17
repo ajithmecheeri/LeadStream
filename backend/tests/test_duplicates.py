@@ -7,6 +7,7 @@ import pytest
 from sqlalchemy import select
 
 from app.core.db import user_scope
+from app.modules.catalog.companies import company_key
 from app.modules.catalog.models import Job
 from app.modules.catalog.parsers import JobCard
 from app.modules.catalog.service import upsert_cards
@@ -14,7 +15,6 @@ from app.modules.jobs.duplicates import View, classify, poster, title_words
 from app.modules.jobs.linking import link_cards
 from app.modules.jobs.models import UserJob
 from app.modules.matching.models import JobMatch
-from app.modules.networking.companies import company_key
 from tests.test_notifications import alert, no_quiet_hours, verified
 
 ABOUT = (
