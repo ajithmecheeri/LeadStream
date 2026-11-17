@@ -63,7 +63,7 @@ export default function SettingsPage() {
             </Field>
           </div>
           <Field label="Email" htmlFor="email"><input id="email" className="input" value={me.email} disabled /></Field>
-          <Field label="Time zone" htmlFor="tz" hint="Quiet hours, the daily digest and the Job sources check times use this.">
+          <Field label="Time zone" htmlFor="tz" hint="Quiet hours, the daily digest use this.">
             <select id="tz" className="select" value={tz} onChange={(e) => setTz(e.target.value)}>
               {[...new Set([tz, ...ZONES])].map((z) => <option key={z}>{z}</option>)}
             </select>

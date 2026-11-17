@@ -6,7 +6,7 @@ API := $(COMPOSE) exec api
 PY ?= $(if $(wildcard .venv/bin/python),$(CURDIR)/.venv/bin/python,python3)
 
 .DEFAULT_GOAL := help
-.PHONY: help setup up down restart logs ps reset-db db dev dev-api dev-worker dev-jobsearch-api dev-jobsearch-worker dev-web stop test test-local test-web e2e e2e-docker lint fmt \
+.PHONY: help setup up down restart logs ps reset-db db dev dev-api dev-worker dev-web stop test test-local test-web e2e e2e-docker lint fmt \
         migrate migration seed seed-reset admin api-gen keys psql parse inbound \
         tunnel email-worker-secret email-worker-deploy email-worker-logs
 
@@ -21,7 +21,7 @@ setup: ## First-time setup: .env, JS packages, Python virtualenv (.venv) for VS 
 	@test -x .venv/bin/pip || (rm -rf .venv && python3 -m venv .venv) || \
 		(echo "Could not create .venv. On Ubuntu run: sudo apt install -y python3-venv python3-pip" && exit 1)
 	@test -x .venv/bin/pip || (echo "pip is missing from .venv. Run: sudo apt install -y python3-venv, then make setup" && rm -rf .venv && exit 1)
-	.venv/bin/pip install -e "backend[dev]" -e "services/jobsearch[dev]"
+	.venv/bin/pip install -e "backend[dev]"
 
 # --- Everything in Docker --------------------------------------------------
 up: ## Build and start the whole stack (http://localhost:8080)
@@ -33,8 +33,8 @@ up: ## Build and start the whole stack (http://localhost:8080)
 down: ## Stop the stack (keeps the database)
 	$(COMPOSE) --profile tunnel down
 
-restart: ## Restart api, worker, web and the job search service
-	$(COMPOSE) restart api worker web jobsearch-api jobsearch-worker
+restart: ## Restart api, worker and web
+	$(COMPOSE) restart api worker web
 
 logs: ## Follow logs (make logs s=api for one service)
 	$(COMPOSE) logs -f $(s)
@@ -49,13 +49,12 @@ reset-db: ## DELETE the local database volume and start fresh
 db: ## Start only Postgres
 	@test -f .env || cp .env.example .env
 	$(COMPOSE) up -d db
-	$(COMPOSE) run --rm -T jobsearch-db >/dev/null
 
 dev: db ## Start database + API + worker + web in ONE terminal; Ctrl+C stops them
 	@./scripts/dev.sh
 
 stop: ## Stop everything: API, web and the database container
-	-@fuser -k 8000/tcp 8100/tcp 3000/tcp 2>/dev/null || true
+	-@fuser -k 8000/tcp 3000/tcp 2>/dev/null || true
 	$(COMPOSE) --profile tunnel stop
 	@echo "Stopped. Data is kept."
 
@@ -65,23 +64,15 @@ dev-api: ## Run the API locally with reload (needs `make db`)
 dev-worker: ## Run the background worker locally (needs dev-api to have applied migrations)
 	cd backend && $(PY) -m procrastinate --app=app.core.worker.app worker
 
-dev-jobsearch-api: ## Run the Job Search Service API locally on :8100 (needs `make db`)
-	cd services/jobsearch && $(PY) -m alembic upgrade head && $(PY) -m uvicorn jobsearch.main:app --reload --port 8100
-
-dev-jobsearch-worker: ## Run the Job Search Service worker locally (boards every 3 h, job APIs every 6 h)
-	cd services/jobsearch && $(PY) -m procrastinate --app=jobsearch.worker.app worker
-
 dev-web: ## Run the web app locally with hot reload on http://localhost:3000 (needs dev-api)
 	pnpm --filter @fitfirst/web dev
 
 # --- Quality ----------------------------------------------------------------
 test: ## Backend tests inside Docker (stack must be up)
 	$(API) python -m pytest -q
-	$(COMPOSE) exec jobsearch-api python -m pytest -q
 
-test-local: ## Backend and job search service tests on your machine (needs `make db`)
+test-local: ## Backend tests on your machine (needs `make db`)
 	cd backend && $(PY) -m pytest -q
-	cd services/jobsearch && $(PY) -m pytest -q
 
 test-web: ## Web unit tests and type check
 	pnpm --filter @fitfirst/web test
@@ -100,12 +91,10 @@ e2e-docker: ## e2e in the Playwright Docker image, against `make up` (http://loc
 
 lint: ## Lint and format checks
 	cd backend && $(PY) -m ruff check . && $(PY) -m ruff format --check .
-	cd services/jobsearch && $(PY) -m ruff check . && $(PY) -m ruff format --check .
 	pnpm -r typecheck
 
 fmt: ## Auto-format the backend
 	cd backend && $(PY) -m ruff check --fix . && $(PY) -m ruff format .
-	cd services/jobsearch && $(PY) -m ruff check --fix . && $(PY) -m ruff format .
 
 # --- Database ---------------------------------------------------------------
 migrate: ## Apply migrations (Docker)

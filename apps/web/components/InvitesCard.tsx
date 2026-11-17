@@ -74,7 +74,7 @@ export function InvitesCard() {
         <span className="subtle">Job seekers with a free coupon, or admins</span>
       </div>
       <p className="muted">
-        A job seeker&apos;s coupon gives 1 or 3 months free, from the day they accept. An admin manages Job sources and
+        A job seeker&apos;s coupon gives 1 or 3 months free, from the day they accept. An admin manages users and
         never needs a plan. Each link works once, for that email only, for 14 days. Emails aren&apos;t sent yet: copy the
         link and send it yourself.
       </p>

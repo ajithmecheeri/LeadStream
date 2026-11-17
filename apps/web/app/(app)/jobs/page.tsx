@@ -2,7 +2,6 @@
 import type { JobList, JobStats, MatchingStatus, UserJob } from "@fitfirst/api";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
-import { PulledJobs } from "@/components/PulledJobs";
 import { errorMessage, Notice, PageHeader } from "@/components/ui";
 import { api } from "@/lib/api";
 import { APPLICATION_STATUS, applyLink, BAND, DEFAULT_FILTERS, factsLine, filtersFromSearch, filtersToSearch, inQueue, isMatchTab, jobQuery, LEAD_LABEL, matchLine, seenAgo, sourceLabels, TABS, unverifiedNote, type JobFilters, type Tab } from "@/lib/jobs";
@@ -15,39 +14,8 @@ const TAB_EMPTY: Record<Tab, string> = {
   expired: "No expired jobs.",
   ignored: "Nothing ignored.",
   all: "No jobs match these filters.",
-  sources: "",
   review: "Nothing to review. Jobs added from Google results wait here.",
 };
-
-/** Jobs → From sources: every job the job sources brought you, the last run first and then older ones; the ones
- *  that fit are in your list already, the others say why they were left out and can be added (user, 2026-11-16,
- *  2026-11-17). */
-function FromSources() {
-  const [ranAt, setRanAt] = useState<string | null>(null);
-  return (
-    <section className="card" style={{ marginTop: 12 }} data-testid="from-sources">
-      <div className="card-head">
-        <h2>Jobs from the job sources</h2>
-        {ranAt ? <span className="subtle">Last run {new Date(ranAt).toLocaleString("en-IN", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })} ({seenAgo(ranAt)})</span> : null}
-      </div>
-      <p className="hint">
-        Open jobs at the companies BrewMyJob reads and from job sites. The ones that fit your profile are already in
-        your jobs (Top matches or Other jobs); add any other one to score it.
-      </p>
-      <PulledJobs
-        newLabel="Found at the last run"
-        load={() =>
-          api.sourceJobs().then((r) => {
-            setRanAt(r.ran_at ?? null);
-            return r.items;
-          })
-        }
-        add={api.addSourceJob}
-        empty="No jobs from the job sources yet. They arrive within a few hours of adding your resume."
-      />
-    </section>
-  );
-}
 
 function MatchScore({ job }: { job: UserJob }) {
   const m = job.match;
@@ -105,7 +73,7 @@ export default function JobsPage() {
   useEffect(() => {
     if (!filters) return;
     window.history.replaceState(null, "", `/jobs${filtersToSearch(filters)}`);
-    if (filters.tab !== "sources") void load(filters);
+    void load(filters);
     void loadCounts();
   }, [filters, load, loadCounts]);
 
@@ -207,7 +175,7 @@ export default function JobsPage() {
           </button>
         ))}
       </div>
-      {filters.tab === "sources" ? <FromSources /> : (<>
+      <>
       <section className="card filters" aria-label="Filters">
         {isMatchTab(filters.tab) ? (
           <label className="check">
@@ -393,7 +361,7 @@ export default function JobsPage() {
           ) : null}
         </>
       )}
-      </>)}
+      </>
     </>
   );
 }

@@ -4,7 +4,7 @@ export type Lead = "alert" | "recommendation" | "recruiter_invite" | "company_fe
 /** Within the match tabs: every active job, or only new ones. */
 export type StatusFilter = "active" | "new";
 /** The Jobs page queues. The first three split active jobs by match; the rest are jobs you've acted on. */
-export type Tab = "top" | "other" | "unscored" | "applied" | "expired" | "ignored" | "all" | "sources" | "review";
+export type Tab = "top" | "other" | "unscored" | "applied" | "expired" | "ignored" | "all" | "review";
 export const MATCH_TABS: readonly Tab[] = ["top", "other", "unscored"];
 export const isMatchTab = (t: Tab) => MATCH_TABS.includes(t);
 export type DateRange = "any" | "today" | "7d" | "30d" | "custom";
@@ -103,7 +103,7 @@ export function rangeDates(f: Pick<JobFilters, "range" | "from" | "to">, today: 
 export function jobQuery(f: JobFilters, today: Date = new Date()) {
   const queue = isMatchTab(f.tab)
     ? { tab: f.tab as "top" | "other" | "unscored", status: f.status }
-    : { tab: "all" as const, status: (f.tab === "sources" ? "all" : f.tab) as "applied" | "expired" | "ignored" | "review" | "all" };
+    : { tab: "all" as const, status: f.tab as "applied" | "expired" | "ignored" | "review" | "all" };
   return {
     ...queue,
     ...(f.q.trim() ? { q: f.q.trim() } : {}),
@@ -133,7 +133,7 @@ export function filtersFromSearch(search: string): JobFilters {
   // Links from before the queues were tabs said ?status=ignored.
   const legacy = p.get("status") === "ignored" ? "ignored" : null;
   return {
-    tab: legacy ?? pick("tab", ["top", "other", "unscored", "applied", "expired", "ignored", "all", "sources", "review"] as const, "top"),
+    tab: legacy ?? pick("tab", ["top", "other", "unscored", "applied", "expired", "ignored", "all", "review"] as const, "top"),
     status: pick("status", ["active", "new"] as const, "active"),
     q: p.get("q") ?? "",
     source: pick("source", ["", "linkedin", "naukri", "foundit", "company", "adzuna", "assistant"] as const, ""),
@@ -219,7 +219,6 @@ export const TABS: { value: Tab; label: string }[] = [
   { value: "expired", label: "Expired" },
   { value: "ignored", label: "Ignored" },
   { value: "all", label: "All" },
-  { value: "sources", label: "From sources" },
   // Jobs added from Google results with the extension wait here for Keep or Ignore (POC, user 2026-11-17).
   { value: "review", label: "From Google" },
 ];

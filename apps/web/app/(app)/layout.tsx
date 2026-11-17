@@ -42,8 +42,7 @@ const GROUPS: { title: string; items: NavItem[] }[] = [
     ],
   },
 ];
-// Job sources is for admins, Admin settings for the super admin (user, 2026-11-17).
-const SOURCES: NavItem = { href: "/sources", label: "Job sources", icon: "globe" };
+// Admin settings is for the super admin.
 const ADMIN: NavItem = { href: "/admin/settings", label: "Admin settings", icon: "admin" };
 const OPEN = ["applied", "interviewing", "offer"];
 
@@ -80,8 +79,8 @@ export default function AppLayout({ children }: { children: ReactNode }) {
   }, [status, path, blocked]);
 
   if (status !== "signed-in" || !me || blocked) return <div className="loading">Loading…</div>;
-  // Admins also get Job sources; the super admin Admin settings too (the API checks the roles as well).
-  const extra = me.role === "super_admin" ? [SOURCES, ADMIN] : me.role === "admin" ? [SOURCES] : [];
+  // The super admin also gets Admin settings (the API checks the role as well).
+  const extra = me.role === "super_admin" ? [ADMIN] : [];
   const groups = extra.length ? [...GROUPS.slice(0, 2), { ...GROUPS[2]!, items: [...GROUPS[2]!.items, ...extra] }] : GROUPS;
   const all = groups.flatMap((g) => g.items);
   // /settings/mail lights up Mail setup, not Settings as well.

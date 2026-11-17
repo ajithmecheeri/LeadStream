@@ -57,15 +57,8 @@ export type ContactIn = Schemas["ContactIn"];
 export type ContactList = Schemas["ContactList"];
 export type AppSettings = Schemas["AppSettingsIO"];
 export type AdminSettings = Schemas["AdminSettingsOut"];
-export type Sources = Schemas["SourcesOut"];
-export type RunJob = Schemas["RunJobOut"];
-export type CompanyJob = Schemas["CompanyJobOut"];
-export type CompanyJobs = Schemas["CompanyJobsOut"];
 export type Alerts = Schemas["AlertsOut"];
 export type AlertFeed = Schemas["AlertFeedOut"];
-export type FollowedCompany = Schemas["CompanyOut"];
-export type FoundBoard = Schemas["FoundBoardOut"];
-export type Ats = FollowedCompany["ats"];
 export type WhatsApp = Schemas["WhatsAppOut"];
 export type SentMessage = Schemas["NotificationOut"];
 export type Bell = Schemas["BellOut"];
@@ -77,7 +70,6 @@ export type Plans = Schemas["PlansOut"];
 export type Invite = Schemas["InviteOut"];
 export type InviteMade = Schemas["InviteMade"];
 export type InviteView = Schemas["InviteView"];
-export type SourceJobs = Schemas["SourceJobsOut"];
 
 export interface ApiErrorBody {
   error: { code: string; message: string; details?: { field: string; message: string }[] | null; request_id?: string | null };
@@ -369,27 +361,6 @@ export function createApi(opts: ApiOptions = {}) {
     adminSettings: () => call(() => http.GET("/api/v1/admin/settings")),
     saveAdminSettings: (body: AppSettings) => call(() => http.PUT("/api/v1/admin/settings", { body })),
 
-    /** Job sources (milestone 9): company career feeds and Adzuna. */
-    sources: () => call(() => http.GET("/api/v1/sources")),
-    lookupCompany: (query: string) => call(() => http.POST("/api/v1/sources/lookup", { body: { query } })),
-    followCompany: (body: Schemas["CompanyIn"]) => call(() => http.POST("/api/v1/sources/companies", { body })),
-    followSuggested: (boards: string[]) =>
-      call(() => http.POST("/api/v1/sources/companies/suggested", { body: { boards } })),
-    unfollowCompany: (id: string) =>
-      call(() => http.DELETE("/api/v1/sources/companies/{employer_id}", { params: { path: { employer_id: id } } })),
-    checkSources: () => call(() => http.POST("/api/v1/sources/check")),
-    lastRunJobs: () => call(() => http.GET("/api/v1/sources/last-run/jobs")),
-    addRunJob: (jobId: string) =>
-      call(() => http.POST("/api/v1/sources/last-run/jobs/{job_id}", { params: { path: { job_id: jobId } } })),
-    /** Every open India job at a company you follow, kept or not (user, 2026-11-16). */
-    companyJobs: (employerId: string) =>
-      call(() => http.GET("/api/v1/sources/companies/{employer_id}/jobs", { params: { path: { employer_id: employerId } } })),
-    addCompanyJob: (employerId: string, jobId: string) =>
-      call(() =>
-        http.POST("/api/v1/sources/companies/{employer_id}/jobs/{job_id}", {
-          params: { path: { employer_id: employerId, job_id: jobId } },
-        }),
-      ),
     /** Google Alerts by RSS (discovery plan decision 10). */
     alerts: () => call(() => http.GET("/api/v1/alerts")),
     addAlertFeed: (feed_url: string) => call(() => http.POST("/api/v1/alerts", { body: { feed_url } })),
@@ -407,10 +378,6 @@ export function createApi(opts: ApiOptions = {}) {
     makeInvite: (body: Schemas["InviteIn"]) => call(() => http.POST("/api/v1/admin/invites", { body })),
     revokeInvite: (id: string) =>
       call(() => http.DELETE("/api/v1/admin/invites/{invite_id}", { params: { path: { invite_id: id } } })),
-    /** Jobs -> From sources: every job the job sources brought you, the last run and older. */
-    sourceJobs: () => call(() => http.GET("/api/v1/sources/jobs")),
-    addSourceJob: (jobId: string) =>
-      call(() => http.POST("/api/v1/sources/jobs/{job_id}", { params: { path: { job_id: jobId } } })),
   };
 }
 
